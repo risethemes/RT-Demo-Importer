@@ -71,7 +71,7 @@ class RT_Demo_Pack_Upgrader extends WP_Upgrader {
 
 		$this->run( array(
 			'package' => $package,
-			'destination' => EVDM_DEMO_DIR,
+			'destination' => RTDM_DEMO_DIR,
 			'clear_destination' => true, // Do overwrite files.
 			'clear_working' => true,
 			'hook_extra' => array(

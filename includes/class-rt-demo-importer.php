@@ -214,7 +214,7 @@ final class RTM_Demo_Importer {
 	 */
 	public function plugin_action_links( $actions ) {
 		$new_actions = array(
-			'importer' => '<a href="' . admin_url( 'themes.php?page=demo-importer' ) . '" aria-label="' . esc_attr( __( 'View Demo Importer', 'rt-demo-importer' ) ) . '">' . __( 'Demo Importer', 'rt-demo-importer' ) . '</a>',
+			'importer' => '<a href="' . admin_url( 'themes.php?page=rt-demo-importer' ) . '" aria-label="' . esc_attr( __( 'View Demo Importer', 'rt-demo-importer' ) ) . '">' . __( 'Demo Importer', 'rt-demo-importer' ) . '</a>',
 		);
 
 		return array_merge( $new_actions, $actions );
