@@ -1,0 +1,338 @@
+{
+  "name": "Zakra",
+  "slug": "zakra",
+  "version": "1.0.0",
+  "homepage": "https://themegrill.com/themes/zakra/",
+  "categories": {
+    "all": "All",
+    "blog": "Blog",
+    "business": "Business",
+    "ecommerce": "eCommerce",
+    "others": "Others"
+  },
+  "pagebuilders": {
+    "elementor": "Elementor"
+  },
+  "demos": {
+    "business-click": {
+      "title": "Business Click",
+      "preview": "https://wp-themes.com/business-click",
+      "description": "You can expand your business units with this Zakra demo.",
+      "template": [
+        "zakra"
+      ],
+      "category": [
+        "all",
+        "blog",
+        "business"
+      ],
+      "pagebuilder": [
+        "elementor"
+      ],
+      "plugins_list": {
+        "everest-forms": {
+          "name": "Everest Forms",
+          "slug": "everest-forms/everest-forms.php"
+        },
+        "elementor": {
+          "name": "Elementor",
+          "slug": "elementor/elementor.php"
+        },
+        "social-icons": {
+          "name": "Social Icons",
+          "slug": "social-icons/social-icons.php"
+        },
+        "mailchimp-for-wp": {
+          "name": "MailChimp for WordPress",
+          "slug": "mailchimp-for-wp/mailchimp-for-wp.php"
+        }
+      },
+      "core_options": {
+        "blogname": "Business Click",
+        "page_on_front": "Home",
+        "page_for_posts": "Blog"
+      },
+      "elementor_schemes": {
+        "color": [
+          "#4286f5",
+          "#54595f",
+          "#16181a",
+          "#16181a"
+        ],
+        "typography": {
+          "primary": {
+            "font_family": "Inconsolata",
+            "font_weight": "700"
+          },
+          "secondary": {
+            "font_family": "Inconsolata",
+            "font_weight": "400"
+          },
+          "body": {
+            "font_family": "Inconsolata",
+            "font_weight": "400"
+          },
+          "accent": {
+            "font_family": "Inconsolata",
+            "font_weight": "500"
+          }
+        }
+      },
+      "customizer_data_update": {
+        "nav_menu_locations": {
+          "menu-primary": "Primary Menu"
+        }
+      }
+    },
+    "business-plus": {
+      "title": "Business Plus",
+      "preview": "https://wp-themes.com/bizplus",
+      "description": "Want to let the whole world taste your deliciousness, use this Zakra demo.",
+      "template": [
+        "zakra"
+      ],
+      "category": [
+        "all",
+        "blog",
+        "others"
+      ],
+      "pagebuilder": [
+        "elementor"
+      ],
+      "plugins_list": {
+        "everest-forms": {
+          "name": "Everest Forms",
+          "slug": "everest-forms/everest-forms.php"
+        },
+        "elementor": {
+          "name": "Elementor",
+          "slug": "elementor/elementor.php"
+        }
+      },
+      "core_options": {
+        "blogname": "Business Plus",
+        "page_on_front": "Home",
+        "page_for_posts": "Blog"
+      },
+      "elementor_schemes": {
+        "color": [
+          "#d59369",
+          "#16181a",
+          "#363b40",
+          "#d5a78b"
+        ],
+        "typography": {
+          "primary": {
+            "font_family": "Default",
+            "font_weight": "700"
+          },
+          "secondary": {
+            "font_family": "Default",
+            "font_weight": "700"
+          },
+          "body": {
+            "font_family": "Default",
+            "font_weight": "400"
+          },
+          "accent": {
+            "font_family": "Default",
+            "font_weight": "400"
+          }
+        }
+      },
+      "customizer_data_update": {
+        "nav_menu_locations": {
+          "menu-primary": "Primary Menu"
+        }
+      }
+    },
+    "chartize": {
+      "title": "Chartize",
+      "preview": "https://wp-themes.com/charitize",
+      "description": "This Zakra demo is to help the ones in need from your sources.",
+      "template": [
+        "zakra"
+      ],
+      "category": [
+        "all",
+        "blog",
+        "others"
+      ],
+      "pagebuilder": [
+        "elementor"
+      ],
+      "plugins_list": {
+        "everest-forms": {
+          "name": "Everest Forms",
+          "slug": "everest-forms/everest-forms.php"
+        },
+        "elementor": {
+          "name": "Elementor",
+          "slug": "elementor/elementor.php"
+        },
+        "give": {
+          "name": "Give – Donation Plugin and Fundraising Platform",
+          "slug": "give/give.php"
+        }
+      },
+      "core_options": {
+        "blogname": "Chartize",
+        "page_on_front": "HOME",
+        "page_for_posts": "BLOG"
+      },
+      "elementor_schemes": {
+        "color": [
+          "#5bded5",
+          "#f3f5f7",
+          "#363b40",
+          "#16181a"
+        ],
+        "typography": {
+          "primary": {
+            "font_family": "Poppins",
+            "font_weight": "700"
+          },
+          "secondary": {
+            "font_family": "Poppins",
+            "font_weight": "700"
+          },
+          "body": {
+            "font_family": "Merriweather",
+            "font_weight": "400"
+          },
+          "accent": {
+            "font_family": "Merriweather",
+            "font_weight": "400"
+          }
+        }
+      },
+      "customizer_data_update": {
+        "nav_menu_locations": {
+          "menu-primary": "Primary Menu"
+        }
+      }
+    },
+    "online-mag": {
+      "title": "Online Mag",
+      "preview": "https://wp-themes.com/onlinemag",
+      "description": "Start the future of photography and and videography form this Zakra demo",
+      "template": [
+        "zakra"
+      ],
+      "category": [
+        "all",
+        "blog",
+        "others"
+      ],
+      "pagebuilder": [
+        "elementor"
+      ],
+      "plugins_list": {
+        "everest-forms": {
+          "name": "Everest Forms",
+          "slug": "everest-forms/everest-forms.php"
+        },
+        "elementor": {
+          "name": "Elementor",
+          "slug": "elementor/elementor.php"
+        }
+      },
+      "core_options": {
+        "blogname": "Online Mag",
+        "page_on_front": "HOME",
+        "page_for_posts": "BLOG"
+      },
+      "elementor_schemes": {
+        "color": [
+          "#ef6751",
+          "#54595f",
+          "#596172",
+          "#61ce70"
+        ],
+        "typography": {
+          "primary": {
+            "font_family": "Barlow",
+            "font_weight": "700"
+          },
+          "secondary": {
+            "font_family": "Barlow",
+            "font_weight": "700"
+          },
+          "body": {
+            "font_family": "Barlow",
+            "font_weight": "400"
+          },
+          "accent": {
+            "font_family": "Barlow",
+            "font_weight": "500"
+          }
+        }
+      },
+      "customizer_data_update": {
+        "nav_menu_locations": {
+          "menu-primary": "Primary Menu"
+        }
+      }
+    },
+    "trade-hub": {
+      "title": "Trade Hub",
+      "preview": "https://wp-themes.com/trade-hub",
+      "description": "Share the bonding ceremony with your spouse from this Zakra demo.",
+      "template": [
+        "zakra"
+      ],
+      "category": [
+        "all",
+        "others"
+      ],
+      "pagebuilder": [
+        "elementor"
+      ],
+      "plugins_list": {
+        "everest-forms": {
+          "name": "Everest Forms",
+          "slug": "everest-forms/everest-forms.php"
+        },
+        "elementor": {
+          "name": "Elementor",
+          "slug": "elementor/elementor.php"
+        }
+      },
+      "core_options": {
+        "blogname": "Trade Hub",
+        "page_on_front": "Home"
+      },
+      "elementor_schemes": {
+        "color": [
+          "#6ec1e4",
+          "#54595f",
+          "#7a7a7a",
+          "#61ce70"
+        ],
+        "typography": {
+          "primary": {
+            "font_family": "Dancing Script",
+            "font_weight": "600"
+          },
+          "secondary": {
+            "font_family": "Dancing Script",
+            "font_weight": "400"
+          },
+          "body": {
+            "font_family": "Heebo",
+            "font_weight": "400"
+          },
+          "accent": {
+            "font_family": "Heebo",
+            "font_weight": "500"
+          }
+        }
+      },
+      "customizer_data_update": {
+        "nav_menu_locations": {
+          "menu-primary": "Primary Menu"
+        }
+      }
+    }
+  }
+}
