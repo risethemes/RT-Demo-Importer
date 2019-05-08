@@ -24,7 +24,8 @@ if ( ! defined( 'RTDM_PLUGIN_FILE' ) ) {
 
 if( ! defined( 'RTDM_PLUGIN_DEMO_IMPORTER_URL' ) ) {
 	/*define( 'RTDM_PLUGIN_DEMO_IMPORTER_URL', 'http://202.166.198.46/demo_importer' );*/
-	define( 'RTDM_PLUGIN_DEMO_IMPORTER_URL', 'http://localhost/demo_importer/' );
+	//https://raw.githubusercontent.com/risethemes/risetheme_demo_packages/master/	
+	define( 'RTDM_PLUGIN_DEMO_IMPORTER_URL', 'https://raw.githubusercontent.com/suitable12/demoimporter/master/' );
 }
 
 // Include the main RT Demo Importer class.

@@ -28,7 +28,7 @@ class RT_Demo_Importer {
 		add_action( 'init', array( $this, 'includes' ) );
 
 		// Add Demo Importer menu.
-		if ( apply_filters( 'rt_show_demo_importer_page', true ) ) {
+		if ( apply_filters( 'rt_show_demo_importer_page', true ) ) {			
 			add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 			add_action( 'admin_head', array( $this, 'add_menu_classes' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );

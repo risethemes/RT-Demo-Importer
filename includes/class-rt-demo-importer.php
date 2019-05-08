@@ -120,7 +120,7 @@ final class RTM_Demo_Importer {
 	 * @return array
 	 */
 	private function get_core_supported_themes() {
-		$core_themes = array( 'business-click' );
+		$core_themes = array( 'business-click','suitable' );
 
 		// Check for official core themes pro version.
 		$pro_themes = array_diff( $core_themes, array() );
