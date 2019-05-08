@@ -2,14 +2,14 @@
 /**
  * Demo Importer Functions.
  *
- * @package RT_Demo_Importer/Functions
+ * @package SUIT_Demo_Importer/Functions
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // Include core functions (available in both admin and frontend).
-include_once RTDM_ABSPATH . 'includes/functions-demo-update.php';
+include_once SUIT_DM_ABSPATH . 'includes/functions-demo-update.php';
 
 /**
  * Ajax handler for installing a required plugin.
@@ -20,14 +20,14 @@ include_once RTDM_ABSPATH . 'includes/functions-demo-update.php';
  *
  * @global WP_Filesystem_Base $wp_filesystem Subclass
  */
-function rt_ajax_install_required_plugin() {
+function suit_ajax_install_required_plugin() {
 	check_ajax_referer( 'updates' );
 
 	if ( empty( $_POST['plugin'] ) || empty( $_POST['slug'] ) ) {
 		wp_send_json_error( array(
 			'slug'         => '',
 			'errorCode'    => 'no_plugin_specified',
-			'errorMessage' => __( 'No plugin specified.', 'rt-demo-importer' ),
+			'errorMessage' => __( 'No plugin specified.', 'suit-demo-importer' ),
 		) );
 	}
 
@@ -39,7 +39,7 @@ function rt_ajax_install_required_plugin() {
 	);
 
 	if ( ! current_user_can( 'install_plugins' ) ) {
-		$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'rt-demo-importer' );
+		$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'suit-demo-importer' );
 		wp_send_json_error( $status );
 	}
 
@@ -102,7 +102,7 @@ function rt_ajax_install_required_plugin() {
 		global $wp_filesystem;
 
 		$status['errorCode']    = 'unable_to_connect_to_filesystem';
-		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'rt-demo-importer' );
+		$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'suit-demo-importer' );
 
 		// Pass through the error from WP_Filesystem if one was raised.
 		if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
@@ -126,7 +126,7 @@ function rt_ajax_install_required_plugin() {
 
 	wp_send_json_success( $status );
 }
-add_action( 'wp_ajax_install-required-plugin', 'rt_ajax_install_required_plugin', 1 );
+add_action( 'wp_ajax_install-required-plugin', 'suit_ajax_install_required_plugin', 1 );
 
 /**
  * Get an attachment ID from the filename.
@@ -134,7 +134,7 @@ add_action( 'wp_ajax_install-required-plugin', 'rt_ajax_install_required_plugin'
  * @param  string $filename
  * @return int Attachment ID on success, 0 on failure
  */
-function rt_get_attachment_id( $filename ) {
+function suit_get_attachment_id( $filename ) {
 	$attachment_id = 0;
 
 	$file = basename( $filename );
@@ -176,20 +176,20 @@ function rt_get_attachment_id( $filename ) {
 /**
  * Clear data before demo import AJAX action.
  *
- * @see rt_reset_widgets()
- * @see rt_delete_nav_menus()
- * @see rt_remove_theme_mods()
+ * @see suit_reset_widgets()
+ * @see suit_delete_nav_menus()
+ * @see suit_remove_theme_mods()
  */
-if ( apply_filters( 'rt_clear_data_before_demo_import', true ) ) {
-	add_action( 'rt_ajax_before_demo_import', 'rt_reset_widgets', 10 );
-	add_action( 'rt_ajax_before_demo_import', 'rt_delete_nav_menus', 20 );
-	add_action( 'rt_ajax_before_demo_import', 'rt_remove_theme_mods', 30 );
+if ( apply_filters( 'suit_clear_data_before_demo_import', true ) ) {
+	add_action( 'suit_ajax_before_demo_import', 'suit_reset_widgets', 10 );
+	add_action( 'suit_ajax_before_demo_import', 'suit_delete_nav_menus', 20 );
+	add_action( 'suit_ajax_before_demo_import', 'suit_remove_theme_mods', 30 );
 }
 
 /**
  * Reset existing active widgets.
  */
-function rt_reset_widgets() {
+function suit_reset_widgets() {
 	$sidebars_widgets = wp_get_sidebars_widgets();
 
 	// Reset active widgets.
@@ -203,7 +203,7 @@ function rt_reset_widgets() {
 /**
  * Delete existing navigation menus.
  */
-function rt_delete_nav_menus() {
+function suit_delete_nav_menus() {
 	$nav_menus = wp_get_nav_menus();
 
 	// Delete navigation menus.
@@ -217,17 +217,17 @@ function rt_delete_nav_menus() {
 /**
  * Remove theme modifications option.
  */
-function rt_remove_theme_mods() {
+function suit_remove_theme_mods() {
 	remove_theme_mods();
 }
 
 /**
  * After demo imported AJAX action.
  *
- * @see rt_set_wc_pages()
+ * @see suit_set_wc_pages()
  */
 if ( class_exists( 'WooCommerce' ) ) {
-	add_action( 'rt_ajax_demo_imported', 'rt_set_wc_pages' );
+	add_action( 'suit_ajax_demo_imported', 'suit_set_wc_pages' );
 }
 
 /**
@@ -240,10 +240,10 @@ if ( class_exists( 'WooCommerce' ) ) {
  *
  * @param string $demo_id
  */
-function rt_set_wc_pages( $demo_id ) {
+function suit_set_wc_pages( $demo_id ) {
 	global $wpdb;
 
-	$wc_pages = apply_filters( 'rt_wc_' . $demo_id . '_pages', array(
+	$wc_pages = apply_filters( 'suitt_wc_' . $demo_id . '_pages', array(
 		'shop' => array(
 			'name'  => 'shop',
 			'title' => 'Shop',
@@ -322,7 +322,7 @@ function rt_set_wc_pages( $demo_id ) {
  *
  * @since 1.4.0
  */
-function ev_print_admin_notice_templates() {
+function suit_print_admin_notice_templates() {
 	?>
 	<script id="tmpl-wp-installs-admin-notice" type="text/html">
 		<div <# if ( data.id ) { #>id="{{ data.id }}"<# } #> class="notice {{ data.className }}"><p>{{{ data.message }}}</p></div>
@@ -335,14 +335,14 @@ function ev_print_admin_notice_templates() {
 						<# if ( 'plugin' === data.type ) { #>
 							<?php
 							/* translators: %s: Number of plugins */
-							printf( __( '%s plugin successfully installed.', 'rt-demo-importer' ), '{{ data.successes }}' );
+							printf( __( '%s plugin successfully installed.', 'suit-demo-importer' ), '{{ data.successes }}' );
 							?>
 						<# } #>
 					<# } else { #>
 						<# if ( 'plugin' === data.type ) { #>
 							<?php
 							/* translators: %s: Number of plugins */
-							printf( __( '%s plugins successfully installed.', 'rt-demo-importer' ), '{{ data.successes }}' );
+							printf( __( '%s plugins successfully installed.', 'suit-demo-importer' ), '{{ data.successes }}' );
 							?>
 						<# } #>
 					<# } #>
@@ -352,15 +352,15 @@ function ev_print_admin_notice_templates() {
 						<# if ( 1 === data.errors ) { #>
 							<?php
 							/* translators: %s: Number of failed installs */
-							printf( __( '%s install failed.', 'rt-demo-importer' ), '{{ data.errors }}' );
+							printf( __( '%s install failed.', 'suit-demo-importer' ), '{{ data.errors }}' );
 							?>
 						<# } else { #>
 							<?php
 							/* translators: %s: Number of failed installs */
-							printf( __( '%s installs failed.', 'rt-demo-importer' ), '{{ data.errors }}' );
+							printf( __( '%s installs failed.', 'suit-demo-importer' ), '{{ data.errors }}' );
 							?>
 						<# } #>
-						<span class="screen-reader-text"><?php _e( 'Show more details', 'rt-demo-importer' ); ?></span>
+						<span class="screen-reader-text"><?php _e( 'Show more details', 'suit-demo-importer' ); ?></span>
 						<span class="toggle-indicator" aria-hidden="true"></span>
 					</button>
 				<# } #>

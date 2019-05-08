@@ -2,7 +2,7 @@
 /**
  * Customize API: RT_Customize_Demo_Importer_Setting class
  *
- * @package RT_Demo_Importer/Classes
+ * @package SUIT_Demo_Importer/Classes
  * @version 1.0.0
  */
 

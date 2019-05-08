@@ -4,16 +4,16 @@
  *
  * Code adapted from the "Customizer Export/Import" plugin.
  *
- * @package RT_Demo_Importer/Classes
+ * @package SUIT_Demo_Importer/Classes
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * RT_Customizer_Importer Class.
+ * SUIT_Customizer_Importer Class.
  */
-class RT_Customizer_Importer {
+class SUIT_Customizer_Importer {
 
 	/**
 	 * Imports uploaded mods and calls WordPress core customize_save actions so
@@ -33,20 +33,20 @@ class RT_Customizer_Importer {
 
 		// Data checks.
 		if ( ! is_array( $data ) && ( ! isset( $data['template'] ) || ! isset( $data['mods'] ) ) ) {
-			return new WP_Error( 'rt_customizer_import_data_error', __( 'The customizer import file is not in a correct format. Please make sure to use the correct customizer import file.', 'rt-demo-importer' ) );
+			return new WP_Error( 'suit_customizer_import_data_error', __( 'The customizer import file is not in a correct format. Please make sure to use the correct customizer import file.', 'suit-demo-importer' ) );
 		}
 
 		if ( ! empty( $demo_data['template'] ) && ! in_array( $data['template'], $demo_data['template'], true ) ) {
-			return new WP_Error( 'rt_customizer_import_wrong_theme', __( 'The customizer import file is not suitable for current theme. You can only import customizer settings for the same theme or a child theme.', 'rt-demo-importer' ) );
+			return new WP_Error( 'suit_customizer_import_wrong_theme', __( 'The customizer import file is not suitable for current theme. You can only import customizer settings for the same theme or a child theme.', 'suit-demo-importer' ) );
 		}
 
 		// Import Images.
-		if ( apply_filters( 'rt_customizer_import_images', true ) ) {
+		if ( apply_filters( 'suit_customizer_import_images', true ) ) {
 			$data['mods'] = self::import_customizer_images( $data['mods'] );
 		}
 
 		// Modify settings array.
-		$data = apply_filters( 'rt_customizer_demo_import_settings', $data, $demo_data, $demo_id );
+		$data = apply_filters( 'suit_customizer_demo_import_settings', $data, $demo_data, $demo_id );
 
 		// Import custom options.
 		if ( isset( $data['options'] ) ) {

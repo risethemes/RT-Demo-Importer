@@ -1101,14 +1101,14 @@ function navigateRouter( url, state ) {
 demos.Router = Backbone.Router.extend({
 
 	routes: {
-		'themes.php?page=rt-demo-importer&demo=:slug': 'preview',
-		'themes.php?page=rt-demo-importer&browse=:sort': 'sort',
-		'themes.php?page=rt-demo-importer&search=:query': 'search',
-		'themes.php?page=rt-demo-importer': 'sort'
+		'themes.php?page=suit-demo-importer&demo=:slug': 'preview',
+		'themes.php?page=suit-demo-importer&browse=:sort': 'sort',
+		'themes.php?page=suit-demo-importer&search=:query': 'search',
+		'themes.php?page=suit-demo-importer': 'sort'
 	},
 
 	baseUrl: function( url ) {
-		return 'themes.php?page=rt-demo-importer' + url;
+		return 'themes.php?page=suit-demo-importer' + url;
 	},
 
 	demoPath: '&demo=',
@@ -1415,12 +1415,12 @@ $( document ).ready( function() {
 	} ).trigger( 'init_tooltips' );
 
 	// Confirm WordPress reset wizard.
-	$( '.rt-reset-wordpress' ).on( 'click', function() {
+	$( '.suit-reset-wordpress' ).on( 'click', function() {
 		return window.confirm( _demoImporterSettings.settings.confirmReset );
 	});
 
 	// Change the footer text when rating link is clicked.
-	$( '.rt-demo-importer-rating-link' ).on( 'click', function() {
+	$( '.suit-demo-importer-rating-link' ).on( 'click', function() {
 		var $this_el = $( this );
 
 		$.post( demos.data.settings.ajaxUrl, {

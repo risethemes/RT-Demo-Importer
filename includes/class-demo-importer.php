@@ -1,17 +1,17 @@
 <?php
 /**
- * RT Demo Importer.
+ * Suitable Demo Importer.
  *
- * @package RT_Demo_Importer/Classes
+ * @package SUIT_Demo_Importer/Classes
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * RT_Demo_Importer Class.
+ * SUIT_Demo_Importer Class.
  */
-class RT_Demo_Importer {
+class SUIT_Demo_Importer {
 
 	/**
 	 * Demo packages.
@@ -28,14 +28,14 @@ class RT_Demo_Importer {
 		add_action( 'init', array( $this, 'includes' ) );
 
 		// Add Demo Importer menu.
-		if ( apply_filters( 'rt_show_demo_importer_page', true ) ) {			
+		if ( apply_filters( 'suit_show_demo_importer_page', true ) ) {			
 			add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 			add_action( 'admin_head', array( $this, 'add_menu_classes' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 
 		// Help Tabs.
-		if ( apply_filters( 'rt_demo_importer_enable_admin_help_tab', true ) ) {
+		if ( apply_filters( 'suit_demo_importer_enable_admin_help_tab', true ) ) {
 			add_action( 'current_screen', array( $this, 'add_help_tabs' ), 50 );
 		}
 
@@ -56,13 +56,13 @@ class RT_Demo_Importer {
 		add_action( 'wp_ajax_footer-text-rated', array( $this, 'ajax_footer_text_rated' ) );
 
 		// Update custom nav menu items, elementor and siteorigin panel data.
-		add_action( 'rt_ajax_demo_imported', array( $this, 'update_nav_menu_items' ) );
-		add_action( 'rt_ajax_demo_imported', array( $this, 'update_elementor_data' ), 10, 2 );
-		add_action( 'rt_ajax_demo_imported', array( $this, 'update_siteorigin_data' ), 10, 2 );
+		add_action( 'suit_ajax_demo_imported', array( $this, 'update_nav_menu_items' ) );
+		add_action( 'suit_ajax_demo_imported', array( $this, 'update_elementor_data' ), 10, 2 );
+		add_action( 'suit_ajax_demo_imported', array( $this, 'update_siteorigin_data' ), 10, 2 );
 
 		// Update widget and customizer demo import settings data.
-		add_filter( 'rt_widget_demo_import_settings', array( $this, 'update_widget_data' ), 10, 4 );
-		add_filter( 'rt_customizer_demo_import_settings', array( $this, 'update_customizer_data' ), 10, 2 );
+		add_filter( 'suit_widget_demo_import_settings', array( $this, 'update_widget_data' ), 10, 4 );
+		add_filter( 'suit_customizer_demo_import_settings', array( $this, 'update_customizer_data' ), 10, 2 );
 	}
 
 	/**
@@ -85,27 +85,26 @@ class RT_Demo_Importer {
 	 *
 	 * @return array of objects
 	 */
-	private function get_demo_packages() {
-		// $packages = set_transient( 'rt_demo_importer_packages', false );	
-		$packages = get_transient( 'rt_demo_importer_packages' );	
+	private function get_demo_packages() {		
+		// $packages = set_transient( 'suit_demo_importer_packages', false );	
+		$packages = get_transient( 'suit_demo_importer_packages' );	
 		$template = strtolower( str_replace( '-pro', '', get_option( 'template' ) ) );
 		/*theme name extract*/
 			
 		// if ( false === $packages && ( isset( $packages->slug ) && $template !== $packages->slug ) ) {
-		
-		if( ! $packages ){		
-
-			$raw_packages = wp_safe_remote_get( RTDM_PLUGIN_DEMO_IMPORTER_URL . "{$template}.json" );			
+		/*echo "<pre>";
+		die( print_r( $packages,1 ) );	*/
+		if( ! $packages ){
+			$raw_packages = wp_safe_remote_get( SUIT_DM_PLUGIN_DEMO_IMPORTER_URL . "{$template}.json" );			
 			if ( ! is_wp_error( $raw_packages ) ) {
 				$packages = json_decode( wp_remote_retrieve_body( $raw_packages ) );				
 				if ( $packages ) {
-					set_transient( 'rt_demo_importer_packages', $packages, WEEK_IN_SECONDS );
+					set_transient( 'suit_demo_importer_packages', $packages, WEEK_IN_SECONDS );
 				}
 			}
 		}
 
-
-		return apply_filters( 'rt_demo_importer_packages_' . $template, $packages );
+		return apply_filters( 'suit_demo_importer_packages_' . $template, $packages );
 	}
 
 	/**
@@ -115,7 +114,7 @@ class RT_Demo_Importer {
 	 * @return string The import file path.
 	 */
 	private function get_import_file_path( $filename ) {
-		return trailingslashit( RTDM_DEMO_DIR . '/dummy-data' ) . sanitize_file_name( $filename );
+		return trailingslashit( SUIT_DM_DEMO_DIR . '/dummy-data' ) . sanitize_file_name( $filename );
 	}
 
 	/**
@@ -123,10 +122,10 @@ class RT_Demo_Importer {
 	 */
 	public function admin_menu() {
 		add_theme_page( 
-			__( 'Demo Importer', 'rt-demo-importer' ), 
-			__( 'RT Demo Importer', 'rt-demo-importer' ), 
+			__( 'Demo Importer', 'suit-demo-importer' ), 
+			__( 'Suitable Demo Importer', 'suit-demo-importer' ), 
 			'switch_themes', 
-			'rt-demo-importer', 
+			'suit-demo-importer', 
 			array( $this, 'demo_importer' ) 
 		);
 	}
@@ -141,9 +140,9 @@ class RT_Demo_Importer {
 			$submenu_class = 'demo-importer hide-if-no-js';
 
 			// Add menu classes if user has access.
-			if ( apply_filters( 'rt_demo_importer_include_class_in_menu', true ) ) {
+			if ( apply_filters( 'suit_demo_importer_include_class_in_menu', true ) ) {
 				foreach ( $submenu['themes.php'] as $order => $menu_item ) {
-					if ( 0 === strpos( $menu_item[0], _x( 'RT Demo Importer', 'Admin menu name', 'rt-demo-importer' ) ) ) {
+					if ( 0 === strpos( $menu_item[0], _x( 'Suitable Demo Importer', 'Admin menu name', 'suit-demo-importer' ) ) ) {
 						$submenu['themes.php'][ $order ][4] = empty( $menu_item[4] ) ? $submenu_class : $menu_item[4] . ' ' . $submenu_class;
 						break;
 					}
@@ -159,62 +158,62 @@ class RT_Demo_Importer {
 		$screen      = get_current_screen();
 		$screen_id   = $screen ? $screen->id : '';
 		$suffix      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$assets_path = rtdm()->plugin_url() . '/assets/';
+		$assets_path = suitdm()->plugin_url() . '/assets/';
 
 		// Register admin styles.
-		wp_register_style( 'rt-demo-importer', $assets_path . 'css/demo-importer.css', array(), RTDM_VERSION );
+		wp_register_style( 'suit-demo-importer', $assets_path . 'css/demo-importer.css', array(), SUIT_DM_VERSION );
 
 		// Add RTL support for admin styles.
-		wp_style_add_data( 'rt-demo-importer', 'rtl', 'replace' );
+		wp_style_add_data( 'suit-demo-importer', 'rtl', 'replace' );
 
 		// Register admin scripts.
 		wp_register_script( 'jquery-tiptip', $assets_path . 'js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), '1.3', true );
-		wp_register_script( 'rt-demo-updates', $assets_path . 'js/admin/demo-updates' . $suffix . '.js', array( 'jquery', 'updates' ), RTDM_VERSION, true );
-		wp_register_script( 'rt-demo-importer', $assets_path . 'js/admin/demo-importer' . $suffix . '.js', array( 'jquery', 'jquery-tiptip', 'wp-backbone', 'wp-a11y', 'rt-demo-updates' ), RTDM_VERSION, true );
+		wp_register_script( 'suit-demo-updates', $assets_path . 'js/admin/demo-updates' . $suffix . '.js', array( 'jquery', 'updates' ), SUIT_DM_VERSION, true );
+		wp_register_script( 'suit-demo-importer', $assets_path . 'js/admin/demo-importer' . $suffix . '.js', array( 'jquery', 'jquery-tiptip', 'wp-backbone', 'wp-a11y', 'suit-demo-updates' ), SUIT_DM_VERSION, true );
 
 		// Demo Importer appearance page.
-		if ( 'appearance_page_rt-demo-importer' === $screen_id ) {
-			wp_enqueue_style( 'rt-demo-importer' );
-			wp_enqueue_script( 'rt-demo-importer' );
-			wp_localize_script( 'rt-demo-updates', '_demoUpdatesSettings', array(
+		if ( 'appearance_page_suit-demo-importer' === $screen_id ) {
+			wp_enqueue_style( 'suit-demo-importer' );
+			wp_enqueue_script( 'suit-demo-importer' );
+			wp_localize_script( 'suit-demo-updates', '_demoUpdatesSettings', array(
 				'l10n' => array(
-					'importing'             => __( 'Importing...', 'rt-demo-importer' ),
-					'demoImportingLabel'    => _x( 'Importing %s...', 'demo', 'rt-demo-importer' ), // no ellipsis
-					'importingMsg'          => __( 'Importing... please wait.', 'rt-demo-importer' ),
-					'importedMsg'           => __( 'Import completed successfully.', 'rt-demo-importer' ),
-					'importFailedShort'     => __( 'Import Failed!', 'rt-demo-importer' ),
-					'importFailed'          => __( 'Import failed: %s', 'rt-demo-importer' ),
-					'demoImportedLabel'     => _x( '%s imported!', 'demo', 'rt-demo-importer' ),
-					'demoImportFailedLabel' => _x( '%s import failed', 'demo', 'rt-demo-importer' ),
-					'livePreview'           => __( 'Live Preview', 'rt-demo-importer' ),
-					'livePreviewLabel'      => _x( 'Live Preview %s', 'demo', 'rt-demo-importer' ),
-					'imported'              => __( 'Imported!', 'rt-demo-importer' ),
-					'statusTextLink'        => '<a href="https://docs.risetheme.com/knowledgebase/demo-import-process-failed/" target="_blank">' . __( 'Try this solution!', 'rt-demo-importer' ) . '</a>',
+					'importing'             => __( 'Importing...', 'suit-demo-importer' ),
+					'demoImportingLabel'    => _x( 'Importing %s...', 'demo', 'suit-demo-importer' ), // no ellipsis
+					'importingMsg'          => __( 'Importing... please wait.', 'suit-demo-importer' ),
+					'importedMsg'           => __( 'Import completed successfully.', 'suit-demo-importer' ),
+					'importFailedShort'     => __( 'Import Failed!', 'suit-demo-importer' ),
+					'importFailed'          => __( 'Import failed: %s', 'suit-demo-importer' ),
+					'demoImportedLabel'     => _x( '%s imported!', 'demo', 'suit-demo-importer' ),
+					'demoImportFailedLabel' => _x( '%s import failed', 'demo', 'suit-demo-importer' ),
+					'livePreview'           => __( 'Live Preview', 'suit-demo-importer' ),
+					'livePreviewLabel'      => _x( 'Live Preview %s', 'demo', 'suit-demo-importer' ),
+					'imported'              => __( 'Imported!', 'suit-demo-importer' ),
+					'statusTextLink'        => '<a href="https://docs.risetheme.com/knowledgebase/demo-import-process-failed/" target="_blank">' . __( 'Try this solution!', 'suit-demo-importer' ) . '</a>',
 				),
 			) );
-			wp_localize_script( 'rt-demo-importer', '_demoImporterSettings', array(
+			wp_localize_script( 'suit-demo-importer', '_demoImporterSettings', array(
 				'demos'    => $this->ajax_query_demos( true ),
 				'settings' => array(
 					'isNew'          => false,
 					'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 					'adminUrl'       => parse_url( self_admin_url(), PHP_URL_PATH ),
-					'suggestURI'     => apply_filters( 'rt_demo_importer_suggest_new', 'https://risethemes.com/contact/' ),
-					'confirmReset'   => __( 'It is strongly recommended that you backup your database before proceeding. Are you sure you wish to run the reset wizard now?', 'rt-demo-importer' ),
-					'confirmImport'  => __( "Importing demo data will ensure that your site will look similar as theme demo. It makes you easy to modify the content instead of creating them from scratch. Also consider before importing theme demo: \n\n1. You need to import demo on fresh WordPress install to exactly replicate the theme demo. \n\n2. None of the posts, pages, attachments or any other data already existing in your site will be deleted or modified. \n\n3. Copyright images will get replaced with other placeholder images. \n\n4. It will take some time to import the theme demo.", 'rt-demo-importer' ),
+					'suggestURI'     => apply_filters( 'suit_demo_importer_suggest_new', 'https://suitable.com/contact/' ),
+					'confirmReset'   => __( 'It is strongly recommended that you backup your database before proceeding. Are you sure you wish to run the reset wizard now?', 'suit-demo-importer' ),
+					'confirmImport'  => __( "Importing demo data will ensure that your site will look similar as theme demo. It makes you easy to modify the content instead of creating them from scratch. Also consider before importing theme demo: \n\n1. You need to import demo on fresh WordPress install to exactly replicate the theme demo. \n\n2. None of the posts, pages, attachments or any other data already existing in your site will be deleted or modified. \n\n3. Copyright images will get replaced with other placeholder images. \n\n4. It will take some time to import the theme demo.", 'suit-demo-importer' ),
 				),
 				'l10n' => array(
-					'search'              => __( 'Search Demos', 'rt-demo-importer' ),
-					'searchPlaceholder'   => __( 'Search demos...', 'rt-demo-importer' ), // placeholder (no ellipsis)
+					'search'              => __( 'Search Demos', 'suit-demo-importer' ),
+					'searchPlaceholder'   => __( 'Search demos...', 'suit-demo-importer' ), // placeholder (no ellipsis)
 					/* translators: %s: support forums URL */
-					'error'               => sprintf( __( 'An unexpected error occurred. Something may be wrong with Evision demo server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rt-demo-importer' ), 'https://wordpress.org/support/plugin/rt-demo-importer' ),
-					'tryAgain'            => __( 'Try Again', 'rt-demo-importer' ),
-					'suggestNew'          => __( 'Please suggest us!', 'rt-demo-importer' ),
-					'demosFound'          => __( 'Number of Demos found: %d', 'rt-demo-importer' ),
-					'noDemosFound'        => __( 'No demos found. Try a different search.', 'rt-demo-importer' ),
-					'collapseSidebar'     => __( 'Collapse Sidebar', 'rt-demo-importer' ),
-					'expandSidebar'       => __( 'Expand Sidebar', 'rt-demo-importer' ),
+					'error'               => sprintf( __( 'An unexpected error occurred. Something may be wrong with Evision demo server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'suit-demo-importer' ), 'https://wordpress.org/support/plugin/suit-demo-importer' ),
+					'tryAgain'            => __( 'Try Again', 'suit-demo-importer' ),
+					'suggestNew'          => __( 'Please suggest us!', 'suit-demo-importer' ),
+					'demosFound'          => __( 'Number of Demos found: %d', 'suit-demo-importer' ),
+					'noDemosFound'        => __( 'No demos found. Try a different search.', 'suit-demo-importer' ),
+					'collapseSidebar'     => __( 'Collapse Sidebar', 'suit-demo-importer' ),
+					'expandSidebar'       => __( 'Expand Sidebar', 'suit-demo-importer' ),
 					/* translators: accessibility text */
-					'selectFeatureFilter' => __( 'Select one or more Demo features to filter by', 'rt-demo-importer' ),
+					'selectFeatureFilter' => __( 'Select one or more Demo features to filter by', 'suit-demo-importer' ),
 				),
 			) );
 		}
@@ -233,18 +232,18 @@ class RT_Demo_Importer {
 
 		$current_screen = get_current_screen();
 
-		// Check to make sure we're on a Evision Demo Importer admin page.
-		if ( isset( $current_screen->id ) && apply_filters( 'rt_demo_importer_display_admin_footer_text', in_array( $current_screen->id, array( 'appearance_page_demo-importer' ) ) ) ) {
+		// Check to make sure we're on a Suitable Demo Importer admin page.
+		if ( isset( $current_screen->id ) && apply_filters( 'suit_demo_importer_display_admin_footer_text', in_array( $current_screen->id, array( 'appearance_page_suit-demo-importer' ) ) ) ) {
 			// Change the footer text.
-			if ( ! get_option( 'rt_demo_importer_admin_footer_text_rated' ) ) {
+			if ( ! get_option( 'suit_demo_importer_admin_footer_text_rated' ) ) {
 				$footer_text = sprintf(
 					/* translators: 1: Evision Demo Importer 2: five stars */
-					__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'rt-demo-importer' ),
-					sprintf( '<strong>%s</strong>', esc_html__( 'Evision Demo Importer', 'rt-demo-importer' ) ),
-					'<a href="https://wordpress.org/support/plugin/rt-demo-importer/reviews?rate=5#new-post" target="_blank" class="evision-demo-importer-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'rt-demo-importer' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
+					__( 'If you like %1$s please leave us a %2$s rating. A huge thanks in advance!', 'suit-demo-importer' ),
+					sprintf( '<strong>%s</strong>', esc_html__( 'Suitable Demo Importer', 'suit-demo-importer' ) ),
+					'<a href="https://wordpress.org/support/plugin/suitable-demo-importer/reviews?rate=5#new-post" target="_blank" class="evision-demo-importer-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'suit-demo-importer' ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
 				);
 			} else {
-				$footer_text = __( 'Thank you for importing with RT Demo Importer.', 'rt-demo-importer' );
+				$footer_text = __( 'Thank you for importing with RT Demo Importer.', 'suit-demo-importer' );
 			}
 		}
 
@@ -257,53 +256,53 @@ class RT_Demo_Importer {
 	public function add_help_tabs() {
 		$screen = get_current_screen();
 
-		if ( ! $screen || ! in_array( $screen->id, array( 'appearance_page_rt-demo-importer' ) ) ) {
+		if ( ! $screen || ! in_array( $screen->id, array( 'appearance_page_suit-demo-importer' ) ) ) {
 			return;
 		}
 
 		$screen->add_help_tab( array(
-			'id'        => 'rt_demo_importer_support_tab',
-			'title'     => __( 'Help &amp; Support', 'rt-demo-importer' ),
+			'id'        => 'suit_demo_importer_support_tab',
+			'title'     => __( 'Help &amp; Support', 'suit-demo-importer' ),
 			'content'   =>
-				'<h2>' . __( 'Help &amp; Support', 'rt-demo-importer' ) . '</h2>' .
+				'<h2>' . __( 'Help &amp; Support', 'suit-demo-importer' ) . '</h2>' .
 				'<p>' . sprintf(
-					__( 'Should you need help understanding, using, or extending Evision Demo Importer, <a href="%s">please read our documentation</a>. You will find all kinds of resources including snippets, tutorials and much more.' , 'rt-demo-importer' ),
-					'https://risethemes.com/docs/rt-demo-importer/'
+					__( 'Should you need help understanding, using, or extending Evision Demo Importer, <a href="%s">please read our documentation</a>. You will find all kinds of resources including snippets, tutorials and much more.' , 'suit-demo-importer' ),
+					'https://risethemes.com/docs/suit-demo-importer/'
 				) . '</p>' .
 				'<p>' . sprintf(
-					__( 'For further assistance with Evision Demo Importer core you can use the <a href="%1$s">community forum</a>. If you need help with premium themes sold by Evision, please <a href="%2$s">use our free support forum</a>.', 'rt-demo-importer' ),
+					__( 'For further assistance with Evision Demo Importer core you can use the <a href="%1$s">community forum</a>. If you need help with premium themes sold by Evision, please <a href="%2$s">use our free support forum</a>.', 'suit-demo-importer' ),
 					'https://wordpress.org/support/plugin/evision-demo-importer',
 					'https://risethemes.com/support-forum/'
 				) . '</p>' .
-				'<p><a href="' . 'https://wordpress.org/support/plugin/rt-demo-importer' . '" class="button button-primary">' . __( 'Community forum', 'rt-demo-importer' ) . '</a> <a href="' . 'https://risethemes.com/support-forum/' . '" class="button">' . __( 'RT Support', 'rt-demo-importer' ) . '</a></p>',
+				'<p><a href="' . 'https://wordpress.org/support/plugin/suit-demo-importer' . '" class="button button-primary">' . __( 'Community forum', 'suit-demo-importer' ) . '</a> <a href="' . 'https://risethemes.com/support-forum/' . '" class="button">' . __( 'RT Support', 'suit-demo-importer' ) . '</a></p>',
 		) );
 
 		$screen->add_help_tab( array(
-			'id'        => 'rt_demo_importer_bugs_tab',
-			'title'     => __( 'Found a bug?', 'rt-demo-importer' ),
+			'id'        => 'suit_demo_importer_bugs_tab',
+			'title'     => __( 'Found a bug?', 'suit-demo-importer' ),
 			'content'   =>
-				'<h2>' . __( 'Found a bug?', 'rt-demo-importer' ) . '</h2>' .
-				'<p>' . sprintf( __( 'If you find a bug within RT Demo Importer you can create a ticket via <a href="%1$s">Github issues</a>. Ensure you read the <a href="%2$s">contribution guide</a> prior to submitting your report. To help us solve your issue, please be as descriptive as possible.', 'rt-demo-importer' ), 'https://github.com/risethemes/RT-Demo-Importer/issues?state=open', 'https://github.com/risethemes/RT-Demo-Importer/blob/master/.github/CONTRIBUTING.md' ) . '</p>' .
-				'<p><a href="' . 'https://github.com/risethemes/RT-Demo-Importer/issues?state=open' . '" class="button button-primary">' . __( 'Report a bug', 'rt-demo-importer' ) . '</a></p>',
+				'<h2>' . __( 'Found a bug?', 'suit-demo-importer' ) . '</h2>' .
+				'<p>' . sprintf( __( 'If you find a bug within RT Demo Importer you can create a ticket via <a href="%1$s">Github issues</a>. Ensure you read the <a href="%2$s">contribution guide</a> prior to submitting your report. To help us solve your issue, please be as descriptive as possible.', 'suit-demo-importer' ), 'https://github.com/risethemes/RT-Demo-Importer/issues?state=open', 'https://github.com/risethemes/RT-Demo-Importer/blob/master/.github/CONTRIBUTING.md' ) . '</p>' .
+				'<p><a href="' . 'https://github.com/risethemes/RT-Demo-Importer/issues?state=open' . '" class="button button-primary">' . __( 'Report a bug', 'suit-demo-importer' ) . '</a></p>',
 
 		) );
 
 		$screen->add_help_tab( array(
-			'id'        => 'rt_demo_importer_reset_tab',
-			'title'     => __( 'Reset wizard', 'rt-demo-importer' ),
+			'id'        => 'suit_demo_importer_reset_tab',
+			'title'     => __( 'Reset wizard', 'suit-demo-importer' ),
 			'content'   =>
-				'<h2>' . __( 'Reset wizard', 'rt-demo-importer' ) . '</h2>' .
-				'<p>' . __( 'If you need to reset the WordPress back to default again, please click on the button below.', 'rt-demo-importer' ) . '</p>' .
-				'<p><a href="' . esc_url( add_query_arg( 'do_reset_wordpress', 'true', admin_url( 'themes.php?page=rt-demo-importer' ) ) ) . '" class="button button-primary rt-reset-wordpress">' . __( 'Reset wizard', 'rt-demo-importer' ) . '</a></p>',
+				'<h2>' . __( 'Reset wizard', 'suit-demo-importer' ) . '</h2>' .
+				'<p>' . __( 'If you need to reset the WordPress back to default again, please click on the button below.', 'suit-demo-importer' ) . '</p>' .
+				'<p><a href="' . esc_url( add_query_arg( 'do_reset_wordpress', 'true', admin_url( 'themes.php?page=suit-demo-importer' ) ) ) . '" class="button button-primary rt-reset-wordpress">' . __( 'Reset wizard', 'suit-demo-importer' ) . '</a></p>',
 		) );
 
 		/*$screen->set_help_sidebar(
-			'<p><strong>' . __( 'For more information:', 'rt-demo-importer' ) . '</strong></p>' .
-			'<p><a href="' . 'https://risethemes.com/demo-importer/' . '" target="_blank">' . __( 'About Demo Importer', 'rt-demo-importer' ) . '</a></p>' .
-			'<p><a href="' . 'https://wordpress.org/plugins/rt-demo-importer/' . '" target="_blank">' . __( 'WordPress.org project', 'rt-demo-importer' ) . '</a></p>' .
-			'<p><a href="' . 'https://github.com/risethemes/RT-demo-importer' . '" target="_blank">' . __( 'Github project', 'rt-demo-importer' ) . '</a></p>' .
-			'<p><a href="' . 'https://risethemes.com/wordpress-themes/' . '" target="_blank">' . __( 'Official themes', 'rt-demo-importer' ) . '</a></p>' .
-			'<p><a href="' . 'https://risethemes.com/plugins/' . '" target="_blank">' . __( 'Official plugins', 'rt-demo-importer' ) . '</a></p>'
+			'<p><strong>' . __( 'For more information:', 'suit-demo-importer' ) . '</strong></p>' .
+			'<p><a href="' . 'https://risethemes.com/demo-importer/' . '" target="_blank">' . __( 'About Demo Importer', 'suit-demo-importer' ) . '</a></p>' .
+			'<p><a href="' . 'https://wordpress.org/plugins/suit-demo-importer/' . '" target="_blank">' . __( 'WordPress.org project', 'suit-demo-importer' ) . '</a></p>' .
+			'<p><a href="' . 'https://github.com/risethemes/RT-demo-importer' . '" target="_blank">' . __( 'Github project', 'suit-demo-importer' ) . '</a></p>' .
+			'<p><a href="' . 'https://risethemes.com/wordpress-themes/' . '" target="_blank">' . __( 'Official themes', 'suit-demo-importer' ) . '</a></p>' .
+			'<p><a href="' . 'https://risethemes.com/plugins/' . '" target="_blank">' . __( 'Official plugins', 'suit-demo-importer' ) . '</a></p>'
 		);*/
 	}
 
@@ -312,10 +311,10 @@ class RT_Demo_Importer {
 	 */
 	public function reset_wizard_notice() {
 		$screen              = get_current_screen();
-		$demo_activated_id   = get_option( 'rt_demo_importer_activated_id' );
-		$demo_notice_dismiss = get_option( 'rt_demo_importer_reset_notice' );
+		$demo_activated_id   = get_option( 'suit_demo_importer_activated_id' );
+		$demo_notice_dismiss = get_option( 'suit_demo_importer_reset_notice' );
 
-		if ( ! $screen || ! in_array( $screen->id, array( 'appearance_page_rt-demo-importer' ) ) ) {
+		if ( ! $screen || ! in_array( $screen->id, array( 'appearance_page_suit-demo-importer' ) ) ) {
 			return;
 		}
 
@@ -331,19 +330,19 @@ class RT_Demo_Importer {
 	 * Hide a notice if the GET variable is set.
 	 */
 	public function hide_reset_notice() {
-		if ( isset( $_GET['evision-demo-importer-hide-notice'] ) && isset( $_GET['_rt_demo_importer_notice_nonce'] ) ) {
-			if ( ! wp_verify_nonce( $_GET['_rt_demo_importer_notice_nonce'], 'rt_demo_importer_hide_notice_nonce' ) ) {
-				wp_die( __( 'Action failed. Please refresh the page and retry.', 'rt-demo-importer' ) );
+		if ( isset( $_GET['suit-demo-importer-hide-notice'] ) && isset( $_GET['_suit_demo_importer_notice_nonce'] ) ) {
+			if ( ! wp_verify_nonce( $_GET['_suit_demo_importer_notice_nonce'], 'suit_demo_importer_hide_notice_nonce' ) ) {
+				wp_die( __( 'Action failed. Please refresh the page and retry.', 'suit-demo-importer' ) );
 			}
 
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'Cheatin&#8217; huh?', 'rt-demo-importer' ) );
+				wp_die( __( 'Cheatin&#8217; huh?', 'suit-demo-importer' ) );
 			}
 
 			$hide_notice = sanitize_text_field( $_GET['evision-demo-importer-hide-notice'] );
 
 			if ( ! empty( $hide_notice ) && 'reset_notice' == $hide_notice ) {
-				update_option( 'rt_demo_importer_reset_notice', 1 );
+				update_option( 'suit_demo_importer_reset_notice', 1 );
 			}
 		}
 	}
@@ -361,7 +360,7 @@ class RT_Demo_Importer {
 			$blogname     = get_option( 'blogname' );
 			$admin_email  = get_option( 'admin_email' );
 			$blog_public  = get_option( 'blog_public' );
-			$footer_rated = get_option( 'rt_demo_importer_admin_footer_text_rated' );
+			$footer_rated = get_option( 'suit_demo_importer_admin_footer_text_rated' );
 
 			if ( 'admin' != $current_user->user_login ) {
 				$user = get_user_by( 'login', 'admin' );
@@ -391,7 +390,7 @@ class RT_Demo_Importer {
 
 			// Update footer text.
 			if ( $footer_rated ) {
-				update_option( 'rt_demo_importer_admin_footer_text_rated', $footer_rated );
+				update_option( 'suit_demo_importer_admin_footer_text_rated', $footer_rated );
 			}
 
 			// Switch current theme.
@@ -401,10 +400,10 @@ class RT_Demo_Importer {
 			}
 
 			// Activate required plugins.
-			$required_plugins = (array) apply_filters( 'rt_demo_importer_' . $template . '_required_plugins', array() );
+			$required_plugins = (array) apply_filters( 'suit_demo_importer_' . $template . '_required_plugins', array() );
 			if ( is_array( $required_plugins ) ) {
-				if ( ! in_array( RTDM_PLUGIN_BASENAME, $required_plugins ) ) {
-					$required_plugins = array_merge( $required_plugins, array( RTDM_PLUGIN_BASENAME ) );
+				if ( ! in_array( SUIT_DM_PLUGIN_BASENAME, $required_plugins ) ) {
+					$required_plugins = array_merge( $required_plugins, array( SUIT_DM_PLUGIN_BASENAME ) );
 				}
 				activate_plugins( $required_plugins, '', is_network_admin(), true );
 			}
@@ -414,7 +413,7 @@ class RT_Demo_Importer {
 			wp_set_auth_cookie( $result['user_id'] );
 
 			// Redirect to demo importer page to display reset success notice.
-			wp_safe_redirect( admin_url( 'themes.php?page=rt-demo-importer&browse=all&reset=true' ) );
+			wp_safe_redirect( admin_url( 'themes.php?page=suit-demo-importer&browse=all&reset=true' ) );
 			exit();
 		}
 	}
@@ -433,7 +432,7 @@ class RT_Demo_Importer {
 		$prepared_demos     = array();
 		$current_template   = get_option( 'template' );
 		$is_pro_theme_demo  = strpos( $current_template, '-pro' ) !== false;
-		$demo_activated_id  = get_option( 'rt_demo_importer_activated_id' );
+		$demo_activated_id  = get_option( 'suit_demo_importer_activated_id' );
 		$available_packages = $this->demo_packages;
 
 		/**
@@ -443,7 +442,7 @@ class RT_Demo_Importer {
 		 * @param null|array $available_packages An array of demo package config to prepare, if any.
 		 * @param string     $demo_activated_id  The current demo activated id.
 		 */
-		$prepared_demos = (array) apply_filters( 'rt_demo_importer_pre_prepare_demos_for_js', array(), $available_packages, $demo_activated_id );
+		$prepared_demos = (array) apply_filters( 'suit_demo_importer_pre_prepare_demos_for_js', array(), $available_packages, $demo_activated_id );
 		
 		if ( ! empty( $prepared_demos ) ) {
 			return $prepared_demos;
@@ -463,7 +462,7 @@ class RT_Demo_Importer {
 			foreach ( $available_packages->demos as $package_slug => $package_data ) {
 				
 				$plugins_list   = isset( $package_data->plugins_list ) ? $package_data->plugins_list : array();
-				$screenshot_url = RTDM_PLUGIN_DEMO_IMPORTER_URL. "{$available_packages->slug}/{$package_slug}/screenshot.png";
+				$screenshot_url = SUIT_DM_PLUGIN_DEMO_IMPORTER_URL. "{$available_packages->slug}/{$package_slug}/screenshot.png";
 				
 				if ( isset( $request['browse'], $package_data->category ) && ! in_array( $request['browse'], $package_data->category, true ) ) {
 					continue;
@@ -492,10 +491,10 @@ class RT_Demo_Importer {
 				$prepared_demos[ $package_slug ] = array(
 					'slug'            => $package_slug,
 					'name'            => $package_data->title,
-					'theme'           => $is_pro_theme_demo ? sprintf( esc_html__( '%s Pro', 'rt-demo-importer' ), $available_packages->name ) : $available_packages->name,
+					'theme'           => $is_pro_theme_demo ? sprintf( esc_html__( '%s Pro', 'suit-demo-importer' ), $available_packages->name ) : $available_packages->name,
 					'isPro'           => $is_pro_theme_demo ? false : isset( $package_data->isPro ),
 					'active'          => $package_slug === $demo_activated_id,
-					'author'          => isset( $package_data->author ) ? $package_data->author : __( 'risetheme', 'rt-demo-importer' ),
+					'author'          => isset( $package_data->author ) ? $package_data->author : __( 'risetheme', 'suit-demo-importer' ),
 					'version'         => isset( $package_data->version ) ? $package_data->version : $available_packages->version,
 					'description'     => isset( $package_data->description ) ? $package_data->description : '',
 					'homepage'        => $available_packages->homepage,
@@ -517,7 +516,7 @@ class RT_Demo_Importer {
 		 *
 		 * @param array $prepared_demos Array of demos.
 		 */
-		$prepared_demos = apply_filters( 'rt_demo_importer_prepare_demos_for_js', $prepared_demos );
+		$prepared_demos = apply_filters( 'suit_demo_importer_prepare_demos_for_js', $prepared_demos );
 		$prepared_demos = array_values( $prepared_demos );
 
 		if ( $return ) {
@@ -548,7 +547,7 @@ class RT_Demo_Importer {
 			wp_send_json_error( array(
 				'slug'         => '',
 				'errorCode'    => 'no_demo_specified',
-				'errorMessage' => __( 'No demo specified.', 'rt-demo-importer' ),
+				'errorMessage' => __( 'No demo specified.', 'suit-demo-importer' ),
 			) );
 		}
 
@@ -563,7 +562,7 @@ class RT_Demo_Importer {
 		}
 
 		if ( ! current_user_can( 'import' ) ) {
-			$status['errorMessage'] = __( 'Sorry, you are not allowed to import content.', 'rt-demo-importer' );
+			$status['errorMessage'] = __( 'Sorry, you are not allowed to import content.', 'suit-demo-importer' );
 			wp_send_json_error( $status );
 		}
 
@@ -571,11 +570,11 @@ class RT_Demo_Importer {
 		include_once( dirname( __FILE__ ) . '/admin/class-demo-pack-upgrader.php' );
 
 		$skin     = new WP_Ajax_Upgrader_Skin();
-		$upgrader = new RT_Demo_Pack_Upgrader( $skin );
+		$upgrader = new SUIT_Demo_Pack_Upgrader( $skin );
 		$template = strtolower( str_replace( '-pro', '', get_option( 'template' ) ) );
 		$packages = isset( $this->demo_packages->demos ) ? json_decode( wp_json_encode( $this->demo_packages->demos ), true ) : array();
 		/*$result   = $upgrader->install( "https://github.com/evision/evision-demo-pack/raw/master/packages/{$template}/{$slug}.zip" );*/
-		$result   = $upgrader->install( RTDM_PLUGIN_DEMO_IMPORTER_URL . "{$template}/{$slug}.zip" );
+		$result   = $upgrader->install( SUIT_DM_PLUGIN_DEMO_IMPORTER_URL . "{$template}/{$slug}.zip" );
 		
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			$status['debug'] = $skin->get_upgrade_messages();
@@ -596,7 +595,7 @@ class RT_Demo_Importer {
 			global $wp_filesystem;
 
 			$status['errorCode']    = 'unable_to_connect_to_filesystem';
-			$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'rt-demo-importer' );
+			$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'suit-demo-importer' );
 
 			// Pass through the error from WP_Filesystem if one was raised.
 			if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->get_error_code() ) {
@@ -610,7 +609,7 @@ class RT_Demo_Importer {
 		$status['demoName']   = $demo_data['title'];
 		$status['previewUrl'] = get_home_url( '/' );
 
-		do_action( 'rt_ajax_before_demo_import' );
+		do_action( 'suit_ajax_before_demo_import' );
 
 		if ( ! empty( $demo_data ) ) {
 			$this->import_dummy_xml( $slug, $demo_data, $status );
@@ -620,9 +619,9 @@ class RT_Demo_Importer {
 			$this->import_widget_settings( $slug, $demo_data, $status );
 
 			// Update imported demo ID.
-			update_option( 'rt_demo_importer_activated_id', $slug );
+			update_option( 'suit_demo_importer_activated_id', $slug );
 
-			do_action( 'rt_ajax_demo_imported', $slug, $demo_data );
+			do_action( 'suit_ajax_demo_imported', $slug, $demo_data );
 		}
 
 		wp_send_json_success( $status );
@@ -636,7 +635,7 @@ class RT_Demo_Importer {
 			wp_die( -1 );
 		}
 
-		update_option( 'rt_demo_importer_admin_footer_text_rated', 1 );
+		update_option( 'suit_demo_importer_admin_footer_text_rated', 1 );
 		wp_die();
 	}
 
@@ -665,7 +664,7 @@ class RT_Demo_Importer {
 		// Include WXR Importer.
 		require dirname( __FILE__ ) . '/importers/wordpress-importer/class-wxr-importer.php';
 
-		do_action( 'rt_ajax_before_dummy_xml_import', $demo_data, $demo_id );
+		do_action( 'suit_ajax_before_dummy_xml_import', $demo_data, $demo_id );
 
 		// Import XML file demo content.
 		if ( is_file( $import_file ) ) {
@@ -676,11 +675,11 @@ class RT_Demo_Importer {
 			$wp_import->import( $import_file );
 			ob_end_clean();
 
-			do_action( 'rt_ajax_dummy_xml_imported', $demo_data, $demo_id );
+			do_action( 'suit_ajax_dummy_xml_imported', $demo_data, $demo_id );
 
 			flush_rewrite_rules();
 		} else {
-			$status['errorMessage'] = __( 'The XML file dummy content is missing.', 'rt-demo-importer' );
+			$status['errorMessage'] = __( 'The XML file dummy content is missing.', 'suit-demo-importer' );
 			wp_send_json_error( $status );
 		}
 
@@ -765,13 +764,13 @@ class RT_Demo_Importer {
 		$import_file = $this->get_import_file_path( 'dummy-customizer.dat' );
 
 		if ( is_file( $import_file ) ) {
-			$results = RT_Customizer_Importer::import( $import_file, $demo_id, $demo_data );
+			$results = SUIT_Customizer_Importer::import( $import_file, $demo_id, $demo_data );
 
 			if ( is_wp_error( $results ) ) {
 				return false;
 			}
 		} else {
-			$status['errorMessage'] = __( 'The DAT file customizer data is missing.', 'rt-demo-importer' );
+			$status['errorMessage'] = __( 'The DAT file customizer data is missing.', 'suit-demo-importer' );
 			wp_send_json_error( $status );
 		}
 
@@ -796,7 +795,7 @@ class RT_Demo_Importer {
 				return false;
 			}
 		} else {
-			$status['errorMessage'] = __( 'The WIE file widget content is missing.', 'rt-demo-importer' );
+			$status['errorMessage'] = __( 'The WIE file widget content is missing.', 'suit-demo-importer' );
 			wp_send_json_error( $status );
 		}
 
@@ -821,7 +820,7 @@ class RT_Demo_Importer {
 							$menu_parts = parse_url( $menu_item->url );
 
 							// Update existing custom nav menu item URL.
-							if ( isset( $menu_parts['path'] ) && isset( $menu_parts['host'] ) && apply_filters( 'rt_demo_importer_nav_menu_item_url_hosts', in_array( $menu_parts['host'], array( 'demo.risethemes.com' ) ) ) ) {
+							if ( isset( $menu_parts['path'] ) && isset( $menu_parts['host'] ) && apply_filters( 'suit_demo_importer_nav_menu_item_url_hosts', in_array( $menu_parts['host'], array( 'demo.risethemes.com' ) ) ) ) {
 								$menu_item->url = str_replace( array( $menu_parts['scheme'], $menu_parts['host'], $menu_parts['path'] ), array( $site_parts['scheme'], $site_parts['host'], trailingslashit( $site_parts['path'] ) ), $menu_item->url );
 								update_post_meta( $menu_item->db_id, '_menu_item_url', esc_url_raw( $menu_item->url ) );
 							}
@@ -1084,7 +1083,7 @@ class RT_Demo_Importer {
 											// Format the value based on style key.
 											switch ( $style_key ) {
 												case 'background_image_attachment':
-													$attachment_id = rt_get_attachment_id( $style_value );
+													$attachment_id = suit_get_attachment_id( $style_value );
 
 													if ( 0 !== $attachment_id ) {
 														$grid_instance['style'][ $style_key ] = $attachment_id;
@@ -1212,4 +1211,4 @@ class RT_Demo_Importer {
 	}
 }
 
-new RT_Demo_Importer();
+new SUIT_Demo_Importer();

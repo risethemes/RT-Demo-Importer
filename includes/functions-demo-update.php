@@ -4,7 +4,7 @@
  *
  * Backward compatibility for demo importer configs and options.
  *
- * @package RT_Demo_Importer/Functions
+ * @package SUIT_Demo_Importer/Functions
  * @version 1.1.0
  */
 
@@ -15,10 +15,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.3.4
  */
-function rt_update_demo_importer_options() {
+function suit_update_demo_importer_options() {
 	$migrate_options = array(
-		'rt_demo_imported_id'             => 'rt_demo_importer_activated_id',
-		'rt_demo_imported_notice_dismiss' => 'rt_demo_importer_reset_notice',
+		'suit_demo_imported_id'             => 'suit_demo_importer_activated_id',
+		'suit_demo_imported_notice_dismiss' => 'suit_demo_importer_reset_notice',
 	);
 
 	foreach ( $migrate_options as $old_option => $new_option ) {
@@ -30,4 +30,4 @@ function rt_update_demo_importer_options() {
 		}
 	}
 }
-add_action( 'admin_init', 'rt_update_demo_importer_options' );
+add_action( 'admin_init', 'suit_update_demo_importer_options' );

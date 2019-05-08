@@ -6,13 +6,13 @@ module.exports = function(grunt) {
         makepot: {
             
             options: {
-                potFilename: 'rt-demo-importer.pot',                    
+                potFilename: 'suit-demo-importer.pot',                    
                 domainPath: 'languages/',
                 type: 'wp-plugin'
             },
             dist: {
                 options: {
-                    potFilename: 'rt-demo-importer.pot',
+                    potFilename: 'suit-demo-importer.pot',
                     exclude: [
                         'vendor/.*'
                     ]
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         // Add Textdomain.
         addtextdomain: {
             options: {
-                textdomain: 'rt-demo-importer',
+                textdomain: 'suit-demo-importer',
                 updateDomains: ['wordpress-importer']
             },
             target: {
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         // Check textdomain errors.
         checktextdomain: {
             options: {
-                text_domain: 'rt-demo-importer',
+                text_domain: 'suit-demo-importer',
                 keywords: [
                     '__:1,2d',
                     '_e:1,2d',

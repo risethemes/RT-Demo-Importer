@@ -24,9 +24,9 @@ define( 'IMPORT_DEBUG', false );
 require dirname( __FILE__ ) . '/class-wxr-parsers.php';
 
 /**
- * RT_WXR_Importer Class.
+ * SUIT_WXR_Importer Class.
  */
-class RT_WXR_Importer extends WP_Importer {
+class SUIT_WXR_Importer extends WP_Importer {
 	var $max_wxr_version = 1.2; // max. supported WXR version
 
 	var $id; // WXR attachment ID
@@ -120,8 +120,8 @@ class RT_WXR_Importer extends WP_Importer {
 	 */
 	function import_start( $file ) {
 		if ( ! is_file($file) ) {
-			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'rt-demo-importer' ) . '</strong><br />';
-			echo __( 'The file does not exist, please try again.', 'rt-demo-importer' ) . '</p>';
+			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'suit-demo-importer' ) . '</strong><br />';
+			echo __( 'The file does not exist, please try again.', 'suit-demo-importer' ) . '</p>';
 			$this->footer();
 			die();
 		}
@@ -129,7 +129,7 @@ class RT_WXR_Importer extends WP_Importer {
 		$import_data = $this->parse( $file );
 
 		if ( is_wp_error( $import_data ) ) {
-			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'rt-demo-importer' ) . '</strong><br />';
+			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'suit-demo-importer' ) . '</strong><br />';
 			echo esc_html( $import_data->get_error_message() ) . '</p>';
 			$this->footer();
 			die();
@@ -164,8 +164,8 @@ class RT_WXR_Importer extends WP_Importer {
 		wp_defer_term_counting( false );
 		wp_defer_comment_counting( false );
 
-		echo '<p>' . __( 'All done.', 'rt-demo-importer' ) . ' <a href="' . admin_url() . '">' . __( 'Have fun!', 'rt-demo-importer' ) . '</a>' . '</p>';
-		echo '<p>' . __( 'Remember to update the passwords and roles of imported users.', 'rt-demo-importer' ) . '</p>';
+		echo '<p>' . __( 'All done.', 'suit-demo-importer' ) . ' <a href="' . admin_url() . '">' . __( 'Have fun!', 'suit-demo-importer' ) . '</a>' . '</p>';
+		echo '<p>' . __( 'Remember to update the passwords and roles of imported users.', 'suit-demo-importer' ) . '</p>';
 
 		do_action( 'import_end' );
 	}
@@ -180,12 +180,12 @@ class RT_WXR_Importer extends WP_Importer {
 		$file = wp_import_handle_upload();
 
 		if ( isset( $file['error'] ) ) {
-			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'rt-demo-importer' ) . '</strong><br />';
+			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'suit-demo-importer' ) . '</strong><br />';
 			echo esc_html( $file['error'] ) . '</p>';
 			return false;
 		} else if ( ! file_exists( $file['file'] ) ) {
-			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'rt-demo-importer' ) . '</strong><br />';
-			printf( __( 'The export file could not be found at <code>%s</code>. It is likely that this was caused by a permissions problem.', 'rt-demo-importer' ), esc_html( $file['file'] ) );
+			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'suit-demo-importer' ) . '</strong><br />';
+			printf( __( 'The export file could not be found at <code>%s</code>. It is likely that this was caused by a permissions problem.', 'suit-demo-importer' ), esc_html( $file['file'] ) );
 			echo '</p>';
 			return false;
 		}
@@ -193,7 +193,7 @@ class RT_WXR_Importer extends WP_Importer {
 		$this->id = (int) $file['id'];
 		$import_data = $this->parse( $file['file'] );
 		if ( is_wp_error( $import_data ) ) {
-			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'rt-demo-importer' ) . '</strong><br />';
+			echo '<p><strong>' . __( 'Sorry, there has been an error.', 'suit-demo-importer' ) . '</strong><br />';
 			echo esc_html( $import_data->get_error_message() ) . '</p>';
 			return false;
 		}
@@ -201,7 +201,7 @@ class RT_WXR_Importer extends WP_Importer {
 		$this->version = $import_data['version'];
 		if ( $this->version > $this->max_wxr_version ) {
 			echo '<div class="error"><p><strong>';
-			printf( __( 'This WXR file (version %s) may not be supported by this version of the importer. Please consider updating.', 'rt-demo-importer' ), esc_html($import_data['version']) );
+			printf( __( 'This WXR file (version %s) may not be supported by this version of the importer. Please consider updating.', 'suit-demo-importer' ), esc_html($import_data['version']) );
 			echo '</strong></p></div>';
 		}
 
@@ -226,7 +226,7 @@ class RT_WXR_Importer extends WP_Importer {
 			foreach ( $import_data['posts'] as $post ) {
 				$login = sanitize_user( $post['post_author'], true );
 				if ( empty( $login ) ) {
-					printf( __( 'Failed to import author %s. Their posts will be attributed to the current user.', 'rt-demo-importer' ), esc_html( $post['post_author'] ) );
+					printf( __( 'Failed to import author %s. Their posts will be attributed to the current user.', 'suit-demo-importer' ), esc_html( $post['post_author'] ) );
 					echo '<br />';
 					continue;
 				}
@@ -252,10 +252,10 @@ class RT_WXR_Importer extends WP_Importer {
 	<input type="hidden" name="import_id" value="<?php echo $this->id; ?>" />
 
 <?php if ( ! empty( $this->authors ) ) : ?>
-	<h3><?php _e( 'Assign Authors', 'rt-demo-importer' ); ?></h3>
-	<p><?php _e( 'To make it easier for you to edit and save the imported content, you may want to reassign the author of the imported item to an existing user of this site. For example, you may want to import all the entries as <code>admin</code>s entries.', 'rt-demo-importer' ); ?></p>
+	<h3><?php _e( 'Assign Authors', 'suit-demo-importer' ); ?></h3>
+	<p><?php _e( 'To make it easier for you to edit and save the imported content, you may want to reassign the author of the imported item to an existing user of this site. For example, you may want to import all the entries as <code>admin</code>s entries.', 'suit-demo-importer' ); ?></p>
 <?php if ( $this->allow_create_users() ) : ?>
-	<p><?php printf( __( 'If a new user is created by WordPress, a new password will be randomly generated and the new user&#8217;s role will be set as %s. Manually changing the new user&#8217;s details will be necessary.', 'rt-demo-importer' ), esc_html( get_option('default_role') ) ); ?></p>
+	<p><?php printf( __( 'If a new user is created by WordPress, a new password will be randomly generated and the new user&#8217;s role will be set as %s. Manually changing the new user&#8217;s details will be necessary.', 'suit-demo-importer' ), esc_html( get_option('default_role') ) ); ?></p>
 <?php endif; ?>
 	<ol id="authors">
 <?php foreach ( $this->authors as $author ) : ?>
@@ -265,14 +265,14 @@ class RT_WXR_Importer extends WP_Importer {
 <?php endif; ?>
 
 <?php if ( $this->allow_fetch_attachments() ) : ?>
-	<h3><?php _e( 'Import Attachments', 'rt-demo-importer' ); ?></h3>
+	<h3><?php _e( 'Import Attachments', 'suit-demo-importer' ); ?></h3>
 	<p>
 		<input type="checkbox" value="1" name="fetch_attachments" id="import-attachments" />
-		<label for="import-attachments"><?php _e( 'Download and import file attachments', 'rt-demo-importer' ); ?></label>
+		<label for="import-attachments"><?php _e( 'Download and import file attachments', 'suit-demo-importer' ); ?></label>
 	</p>
 <?php endif; ?>
 
-	<p class="submit"><input type="submit" class="button" value="<?php esc_attr_e( 'Submit', 'rt-demo-importer' ); ?>" /></p>
+	<p class="submit"><input type="submit" class="button" value="<?php esc_attr_e( 'Submit', 'suit-demo-importer' ); ?>" /></p>
 </form>
 <?php
 	}
@@ -285,7 +285,7 @@ class RT_WXR_Importer extends WP_Importer {
 	 * @param array $author Author information, e.g. login, display name, email
 	 */
 	function author_select( $n, $author ) {
-		_e( 'Import author:', 'rt-demo-importer' );
+		_e( 'Import author:', 'suit-demo-importer' );
 		echo ' <strong>' . esc_html( $author['author_display_name'] );
 		if ( $this->version != '1.0' ) echo ' (' . esc_html( $author['author_login'] ) . ')';
 		echo '</strong><br />';
@@ -296,10 +296,10 @@ class RT_WXR_Importer extends WP_Importer {
 		$create_users = $this->allow_create_users();
 		if ( $create_users ) {
 			if ( $this->version != '1.0' ) {
-				_e( 'or create new user with login name:', 'rt-demo-importer' );
+				_e( 'or create new user with login name:', 'suit-demo-importer' );
 				$value = '';
 			} else {
-				_e( 'as a new user:', 'rt-demo-importer' );
+				_e( 'as a new user:', 'suit-demo-importer' );
 				$value = esc_attr( sanitize_user( $author['author_login'], true ) );
 			}
 
@@ -307,10 +307,10 @@ class RT_WXR_Importer extends WP_Importer {
 		}
 
 		if ( ! $create_users && $this->version == '1.0' )
-			_e( 'assign posts to an existing user:', 'rt-demo-importer' );
+			_e( 'assign posts to an existing user:', 'suit-demo-importer' );
 		else
-			_e( 'or assign posts to an existing user:', 'rt-demo-importer' );
-		wp_dropdown_users( array( 'name' => "user_map[$n]", 'multi' => true, 'show_option_all' => __( '- Select -', 'rt-demo-importer' ) ) );
+			_e( 'or assign posts to an existing user:', 'suit-demo-importer' );
+		wp_dropdown_users( array( 'name' => "user_map[$n]", 'multi' => true, 'show_option_all' => __( '- Select -', 'suit-demo-importer' ) ) );
 		echo '<input type="hidden" name="imported_authors['.$n.']" value="' . esc_attr( $author['author_login'] ) . '" />';
 
 		if ( $this->version != '1.0' )
@@ -360,7 +360,7 @@ class RT_WXR_Importer extends WP_Importer {
 						$this->processed_authors[$old_id] = $user_id;
 					$this->author_mapping[$santized_old_login] = $user_id;
 				} else {
-					printf( __( 'Failed to create new user for %s. Their posts will be attributed to the current user.', 'rt-demo-importer' ), esc_html($this->authors[$old_login]['author_display_name']) );
+					printf( __( 'Failed to create new user for %s. Their posts will be attributed to the current user.', 'suit-demo-importer' ), esc_html($this->authors[$old_login]['author_display_name']) );
 					if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 						echo ' ' . $user_id->get_error_message();
 					echo '<br />';
@@ -412,7 +412,7 @@ class RT_WXR_Importer extends WP_Importer {
 				if ( isset($cat['term_id']) )
 					$this->processed_terms[intval($cat['term_id'])] = $id;
 			} else {
-				printf( __( 'Failed to import category %s', 'rt-demo-importer' ), esc_html($cat['category_nicename']) );
+				printf( __( 'Failed to import category %s', 'suit-demo-importer' ), esc_html($cat['category_nicename']) );
 				if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 					echo ': ' . $id->get_error_message();
 				echo '<br />';
@@ -455,7 +455,7 @@ class RT_WXR_Importer extends WP_Importer {
 				if ( isset($tag['term_id']) )
 					$this->processed_terms[intval($tag['term_id'])] = $id['term_id'];
 			} else {
-				printf( __( 'Failed to import post tag %s', 'rt-demo-importer' ), esc_html($tag['tag_name']) );
+				printf( __( 'Failed to import post tag %s', 'suit-demo-importer' ), esc_html($tag['tag_name']) );
 				if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 					echo ': ' . $id->get_error_message();
 				echo '<br />';
@@ -504,7 +504,7 @@ class RT_WXR_Importer extends WP_Importer {
 				if ( isset($term['term_id']) )
 					$this->processed_terms[intval($term['term_id'])] = $id['term_id'];
 			} else {
-				printf( __( 'Failed to import %s %s', 'rt-demo-importer' ), esc_html($term['term_taxonomy']), esc_html($term['term_name']) );
+				printf( __( 'Failed to import %s %s', 'suit-demo-importer' ), esc_html($term['term_taxonomy']), esc_html($term['term_name']) );
 				if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 					echo ': ' . $id->get_error_message();
 				echo '<br />';
@@ -593,7 +593,7 @@ class RT_WXR_Importer extends WP_Importer {
 			$post = apply_filters( 'wp_import_post_data_raw', $post );
 
 			if ( ! post_type_exists( $post['post_type'] ) ) {
-				printf( __( 'Failed to import &#8220;%s&#8221;: Invalid post type %s', 'rt-demo-importer' ),
+				printf( __( 'Failed to import &#8220;%s&#8221;: Invalid post type %s', 'suit-demo-importer' ),
 					esc_html($post['post_title']), esc_html($post['post_type']) );
 				echo '<br />';
 				do_action( 'wp_import_post_exists', $post );
@@ -630,7 +630,7 @@ class RT_WXR_Importer extends WP_Importer {
 			$post_exists = apply_filters( 'wp_import_existing_post', $post_exists, $post );
 
 			if ( $post_exists && get_post_type( $post_exists ) == $post['post_type'] ) {
-				printf( __('%s &#8220;%s&#8221; already exists.', 'rt-demo-importer'), $post_type_object->labels->singular_name, esc_html($post['post_title']) );
+				printf( __('%s &#8220;%s&#8221; already exists.', 'suit-demo-importer'), $post_type_object->labels->singular_name, esc_html($post['post_title']) );
 				echo '<br />';
 				$comment_post_ID = $post_id = $post_exists;
 				$this->processed_posts[ intval( $post['post_id'] ) ] = intval( $post_exists );
@@ -692,7 +692,7 @@ class RT_WXR_Importer extends WP_Importer {
 				}
 
 				if ( is_wp_error( $post_id ) ) {
-					printf( __( 'Failed to import %s &#8220;%s&#8221;', 'rt-demo-importer' ),
+					printf( __( 'Failed to import %s &#8220;%s&#8221;', 'suit-demo-importer' ),
 						$post_type_object->labels->singular_name, esc_html($post['post_title']) );
 					if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 						echo ': ' . $post_id->get_error_message();
@@ -726,7 +726,7 @@ class RT_WXR_Importer extends WP_Importer {
 							$term_id = $t['term_id'];
 							do_action( 'wp_import_insert_term', $t, $term, $post_id, $post );
 						} else {
-							printf( __( 'Failed to import %s %s', 'rt-demo-importer' ), esc_html($taxonomy), esc_html($term['name']) );
+							printf( __( 'Failed to import %s %s', 'suit-demo-importer' ), esc_html($taxonomy), esc_html($term['name']) );
 							if ( defined('IMPORT_DEBUG') && IMPORT_DEBUG )
 								echo ': ' . $t->get_error_message();
 							echo '<br />';
@@ -858,14 +858,14 @@ class RT_WXR_Importer extends WP_Importer {
 
 		// no nav_menu term associated with this menu item
 		if ( ! $menu_slug ) {
-			_e( 'Menu item skipped due to missing menu slug', 'rt-demo-importer' );
+			_e( 'Menu item skipped due to missing menu slug', 'suit-demo-importer' );
 			echo '<br />';
 			return;
 		}
 
 		$menu_id = term_exists( $menu_slug, 'nav_menu' );
 		if ( ! $menu_id ) {
-			printf( __( 'Menu item skipped due to invalid menu slug: %s', 'rt-demo-importer' ), esc_html( $menu_slug ) );
+			printf( __( 'Menu item skipped due to invalid menu slug: %s', 'suit-demo-importer' ), esc_html( $menu_slug ) );
 			echo '<br />';
 			return;
 		} else {
@@ -933,7 +933,7 @@ class RT_WXR_Importer extends WP_Importer {
 	function process_attachment( $post, $url ) {
 		if ( ! $this->fetch_attachments )
 			return new WP_Error( 'attachment_processing_error',
-				__( 'Fetching attachments is not enabled', 'rt-demo-importer' ) );
+				__( 'Fetching attachments is not enabled', 'suit-demo-importer' ) );
 
 		// if the URL is absolute, but does not contain address, then upload it assuming base_site_url
 		if ( preg_match( '|^/[\w\W]+$|', $url ) )
@@ -946,7 +946,7 @@ class RT_WXR_Importer extends WP_Importer {
 		if ( $info = wp_check_filetype( $upload['file'] ) )
 			$post['post_mime_type'] = $info['type'];
 		else
-			return new WP_Error( 'attachment_processing_error', __('Invalid file type', 'rt-demo-importer') );
+			return new WP_Error( 'attachment_processing_error', __('Invalid file type', 'suit-demo-importer') );
 
 		$post['guid'] = $upload['url'];
 
@@ -996,7 +996,7 @@ class RT_WXR_Importer extends WP_Importer {
 		// request failed
 		if ( ! $headers ) {
 			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote server did not respond', 'rt-demo-importer') );
+			return new WP_Error( 'import_file_error', __('Remote server did not respond', 'suit-demo-importer') );
 		}
 
 		$remote_response_code = wp_remote_retrieve_response_code( $remote_response );
@@ -1004,25 +1004,25 @@ class RT_WXR_Importer extends WP_Importer {
 		// make sure the fetch was successful
 		if ( $remote_response_code != '200' ) {
 			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'rt-demo-importer'), esc_html($remote_response_code), get_status_header_desc($remote_response_code) ) );
+			return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'suit-demo-importer'), esc_html($remote_response_code), get_status_header_desc($remote_response_code) ) );
 		}
 
 		$filesize = filesize( $upload['file'] );
 
 		if ( isset( $headers['content-length'] ) && $filesize != $headers['content-length'] ) {
 			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Remote file is incorrect size', 'rt-demo-importer') );
+			return new WP_Error( 'import_file_error', __('Remote file is incorrect size', 'suit-demo-importer') );
 		}
 
 		if ( 0 == $filesize ) {
 			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', __('Zero size file downloaded', 'rt-demo-importer') );
+			return new WP_Error( 'import_file_error', __('Zero size file downloaded', 'suit-demo-importer') );
 		}
 
 		$max_size = (int) $this->max_attachment_size();
 		if ( ! empty( $max_size ) && $filesize > $max_size ) {
 			@unlink( $upload['file'] );
-			return new WP_Error( 'import_file_error', sprintf(__('Remote file is too large, limit is %s', 'rt-demo-importer'), size_format($max_size) ) );
+			return new WP_Error( 'import_file_error', sprintf(__('Remote file is too large, limit is %s', 'suit-demo-importer'), size_format($max_size) ) );
 		}
 
 		// keep track of the old and new urls so we can substitute them later
@@ -1122,14 +1122,14 @@ class RT_WXR_Importer extends WP_Importer {
 	// Display import page title
 	function header() {
 		echo '<div class="wrap">';
-		echo '<h2>' . __( 'Import WordPress', 'rt-demo-importer' ) . '</h2>';
+		echo '<h2>' . __( 'Import WordPress', 'suit-demo-importer' ) . '</h2>';
 
 		$updates = get_plugin_updates();
 		$basename = plugin_basename(__FILE__);
 		if ( isset( $updates[$basename] ) ) {
 			$update = $updates[$basename];
 			echo '<div class="error"><p><strong>';
-			printf( __( 'A new version of this importer is available. Please update to version %s to ensure compatibility with newer export files.', 'rt-demo-importer' ), $update->update->new_version );
+			printf( __( 'A new version of this importer is available. Please update to version %s to ensure compatibility with newer export files.', 'suit-demo-importer' ), $update->update->new_version );
 			echo '</strong></p></div>';
 		}
 	}
@@ -1144,8 +1144,8 @@ class RT_WXR_Importer extends WP_Importer {
 	 */
 	function greet() {
 		echo '<div class="narrow">';
-		echo '<p>'.__( 'Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import the posts, pages, comments, custom fields, categories, and tags into this site.', 'rt-demo-importer' ).'</p>';
-		echo '<p>'.__( 'Choose a WXR (.xml) file to upload, then click Upload file and import.', 'rt-demo-importer' ).'</p>';
+		echo '<p>'.__( 'Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import the posts, pages, comments, custom fields, categories, and tags into this site.', 'suit-demo-importer' ).'</p>';
+		echo '<p>'.__( 'Choose a WXR (.xml) file to upload, then click Upload file and import.', 'suit-demo-importer' ).'</p>';
 		wp_import_upload_form( 'admin.php?import=wordpress&amp;step=1' );
 		echo '</div>';
 	}

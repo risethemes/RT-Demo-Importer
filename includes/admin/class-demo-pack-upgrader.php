@@ -1,6 +1,6 @@
 <?php
 /**
- * Upgrade API: RT_Demo_Pack_Upgrader class
+ * Upgrade API: SUIT_Demo_Pack_Upgrader class
  *
  * Core class used for upgrading/installing demo packs.
  *
@@ -9,9 +9,9 @@
  *
  * @since 1.5.0
  * @see WP_Upgrader
- * @package Evision_Demo_Importer/Class
+ * @package SUIT_Demo_Importer/Class
  */
-class RT_Demo_Pack_Upgrader extends WP_Upgrader {
+class SUIT_Demo_Pack_Upgrader extends WP_Upgrader {
 
 	/**
 	 * Result of the demo pack upgrade.
@@ -32,16 +32,16 @@ class RT_Demo_Pack_Upgrader extends WP_Upgrader {
 	 * Initialize the install strings.
 	 */
 	public function install_strings() {
-		$this->strings['no_package'] = __( 'Install package not available.', 'rt-demo-importer' );
+		$this->strings['no_package'] = __( 'Install package not available.', 'suit-demo-importer' );
 		/* translators: %s: package URL */
-		$this->strings['downloading_package'] = __( 'Downloading install package from <span class="code">%s</span>&#8230;', 'rt-demo-importer' );
-		$this->strings['unpack_package'] = __( 'Unpacking the package&#8230;', 'rt-demo-importer' );
-		$this->strings['remove_old'] = __( 'Removing the old version of the demo&#8230;', 'rt-demo-importer' );
-		$this->strings['remove_old_failed'] = __( 'Could not remove the old demo.', 'rt-demo-importer' );
-		$this->strings['installing_package'] = __( 'Installing the demo&#8230;', 'rt-demo-importer' );
-		$this->strings['no_files'] = __( 'The demo contains no files.', 'rt-demo-importer' );
-		$this->strings['process_failed'] = __( 'Demo install failed.', 'rt-demo-importer' );
-		$this->strings['process_success'] = __( 'Demo installed successfully.', 'rt-demo-importer' );
+		$this->strings['downloading_package'] = __( 'Downloading install package from <span class="code">%s</span>&#8230;', 'suit-demo-importer' );
+		$this->strings['unpack_package'] = __( 'Unpacking the package&#8230;', 'suit-demo-importer' );
+		$this->strings['remove_old'] = __( 'Removing the old version of the demo&#8230;', 'suit-demo-importer' );
+		$this->strings['remove_old_failed'] = __( 'Could not remove the old demo.', 'suit-demo-importer' );
+		$this->strings['installing_package'] = __( 'Installing the demo&#8230;', 'suit-demo-importer' );
+		$this->strings['no_files'] = __( 'The demo contains no files.', 'suit-demo-importer' );
+		$this->strings['process_failed'] = __( 'Demo install failed.', 'suit-demo-importer' );
+		$this->strings['process_success'] = __( 'Demo installed successfully.', 'suit-demo-importer' );
 	}
 
 	/**
@@ -71,7 +71,7 @@ class RT_Demo_Pack_Upgrader extends WP_Upgrader {
 
 		$this->run( array(
 			'package' => $package,
-			'destination' => RTDM_DEMO_DIR,
+			'destination' => SUIT_DM_DEMO_DIR,
 			'clear_destination' => true, // Do overwrite files.
 			'clear_working' => true,
 			'hook_extra' => array(
@@ -115,7 +115,7 @@ class RT_Demo_Pack_Upgrader extends WP_Upgrader {
 
 		// Check the folder contains at least 1 valid demo.
 		if ( ! file_exists( $working_directory . 'screenshot.jpg' )  && ! file_exists( $working_directory . 'screenshot.png' ) ) {
-			return new WP_Error( 'incompatible_archive_no_demos', $this->strings['incompatible_archive'], __( 'No valid demos were found.', 'rt-demo-importer' ) );
+			return new WP_Error( 'incompatible_archive_no_demos', $this->strings['incompatible_archive'], __( 'No valid demos were found.', 'suit-demo-importer' ) );
 		}
 
 		return $source;

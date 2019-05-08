@@ -4,16 +4,16 @@
  *
  * Code adapted from the "Widget Importer & Exporter" plugin.
  *
- * @package RT_Demo_Importer/Classes
+ * @package SUIT_Demo_Importer/Classes
  * @version 1.0.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * RT_Widget_Importer Class.
+ * SUIT_Widget_Importer Class.
  */
-class RT_Widget_Importer {
+class SUIT_Widget_Importer {
 
 	/**
 	 * Import widget JSON data.
@@ -31,7 +31,7 @@ class RT_Widget_Importer {
 
 		// Have valid data? If no data or could not decode.
 		if ( empty( $data ) || ! is_object( $data ) ) {
-			return new WP_Error( 'evision_widget_import_data_error',	__( 'Widget import data could not be read. Please try a different file.', 'rt-demo-importer' ) );
+			return new WP_Error( 'evision_widget_import_data_error',	__( 'Widget import data could not be read. Please try a different file.', 'suit-demo-importer' ) );
 		}
 
 		// Hook before import.
@@ -68,7 +68,7 @@ class RT_Widget_Importer {
 				$sidebar_available    = false;
 				$use_sidebar_id       = 'wp_inactive_widgets'; // Add to inactive if sidebar does not exist in theme.
 				$sidebar_message_type = 'error';
-				$sidebar_message      = __( 'Sidebar does not exist in theme (moving widget to Inactive)', 'rt-demo-importer' );
+				$sidebar_message      = __( 'Sidebar does not exist in theme (moving widget to Inactive)', 'suit-demo-importer' );
 			}
 
 			// Result for sidebar.
@@ -90,7 +90,7 @@ class RT_Widget_Importer {
 				if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
 					$fail                = true;
 					$widget_message_type = 'error';
-					$widget_message      = __( 'Site does not support widget', 'rt-demo-importer' ); // Explain why widget not imported.
+					$widget_message      = __( 'Site does not support widget', 'suit-demo-importer' ); // Explain why widget not imported.
 				}
 
 				/**
@@ -125,7 +125,7 @@ class RT_Widget_Importer {
 						if ( in_array( "$id_base-$check_id", $sidebar_widgets ) && (array) $widget == $check_widget ) {
 							$fail                = true;
 							$widget_message_type = 'warning';
-							$widget_message      = __( 'Widget already exists', 'rt-demo-importer' ); // Explain why widget not imported.
+							$widget_message      = __( 'Widget already exists', 'suit-demo-importer' ); // Explain why widget not imported.
 
 							break;
 						}
@@ -184,16 +184,16 @@ class RT_Widget_Importer {
 					// Success message.
 					if ( $sidebar_available ) {
 						$widget_message_type = 'success';
-						$widget_message      = __( 'Imported', 'rt-demo-importer' );
+						$widget_message      = __( 'Imported', 'suit-demo-importer' );
 					} else {
 						$widget_message_type = 'warning';
-						$widget_message      = __( 'Imported to Inactive', 'rt-demo-importer' );
+						$widget_message      = __( 'Imported to Inactive', 'suit-demo-importer' );
 					}
 				}
 
 				// Result for widget instance.
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name']         = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // Widget name or ID if name not available (not supported by site).
-				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : __( 'No Title', 'rt-demo-importer' ); // Show "No Title" if widget instance is untitled.
+				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : __( 'No Title', 'suit-demo-importer' ); // Show "No Title" if widget instance is untitled.
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = $widget_message_type;
 				$results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message']      = $widget_message;
 			}

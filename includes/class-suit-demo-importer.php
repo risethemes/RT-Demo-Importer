@@ -2,18 +2,18 @@
 /**
  * RT Demo Importer setup
  *
- * @package RT_Demo_Importer
+ * @package SUIT_Demo_Importer
  * @since   1.5.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Main RT Demo Importer Class.
+ * Main Suitable Demo Importer Class.
  *
- * @class RTM_Demo_Importer
+ * @class Suitable_Demo_Importer
  */
-final class RTM_Demo_Importer {
+final class Suitable_Demo_Importer {
 
 	/**
 	 * Plugin version.
@@ -47,7 +47,7 @@ final class RTM_Demo_Importer {
 	 * @since 1.4
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'rt-demo-importer' ), '1.4' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'suit-demo-importer' ), '1.4' );
 	}
 
 	/**
@@ -56,7 +56,7 @@ final class RTM_Demo_Importer {
 	 * @since 1.4
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'rt-demo-importer' ), '1.4' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'suit-demo-importer' ), '1.4' );
 	}
 
 	/**
@@ -66,7 +66,7 @@ final class RTM_Demo_Importer {
 		$this->define_constants();
 		$this->init_hooks();
 
-		do_action( 'RT_demo_importer_loaded' );
+		do_action( 'SUIT_demo_importer_loaded' );
 	}
 
 	/**
@@ -75,10 +75,10 @@ final class RTM_Demo_Importer {
 	private function define_constants() {
 		$upload_dir = wp_upload_dir( null, false );
 
-		$this->define( 'RTDM_ABSPATH', dirname( RTDM_PLUGIN_FILE ) . '/' );
-		$this->define( 'RTDM_PLUGIN_BASENAME', plugin_basename( RTDM_PLUGIN_FILE ) );
-		$this->define( 'RTDM_VERSION', $this->version );
-		$this->define( 'RTDM_DEMO_DIR', $upload_dir['basedir'] . '/rt-demo-pack/' );
+		$this->define( 'SUIT_DM_ABSPATH', dirname( SUIT_DM_PLUGIN_FILE ) . '/' );
+		$this->define( 'SUIT_DM_PLUGIN_BASENAME', plugin_basename( SUIT_DM_PLUGIN_FILE ) );
+		$this->define( 'SUIT_DM_VERSION', $this->version );
+		$this->define( 'SUIT_DM_DEMO_DIR', $upload_dir['basedir'] . '/suit-demo-pack/' );
 	}
 
 	/**
@@ -101,13 +101,13 @@ final class RTM_Demo_Importer {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Register activation hook.
-		register_activation_hook( RTDM_PLUGIN_FILE, array( $this, 'install' ) );
+		register_activation_hook( SUIT_DM_PLUGIN_FILE, array( $this, 'install' ) );
 
 		// Check with Official RT theme is installed.
 		if ( in_array( get_option( 'template' ), $this->get_core_supported_themes(), true ) ) {
 			$this->includes();
 
-			add_filter( 'plugin_action_links_' . RTDM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+			add_filter( 'plugin_action_links_' . SUIT_DM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 		} else {
 			add_action( 'admin_notices', array( $this, 'theme_support_missing_notice' ) );
@@ -135,8 +135,8 @@ final class RTM_Demo_Importer {
 	 * Include required core files.
 	 */
 	private function includes() {
-		include_once RTDM_ABSPATH . 'includes/class-demo-importer.php';
-		include_once RTDM_ABSPATH . 'includes/functions-demo-importer.php';		
+		include_once SUIT_DM_ABSPATH . 'includes/class-demo-importer.php';
+		include_once SUIT_DM_ABSPATH . 'includes/functions-demo-importer.php';		
 	}
 
 	/**
@@ -145,7 +145,7 @@ final class RTM_Demo_Importer {
 	public function install() {
 		$files = array(
 			array(
-				'base'    => RTDM_DEMO_DIR,
+				'base'    => SUIT_DM_DEMO_DIR,
 				'file'    => 'index.html',
 				'content' => '',
 			),
@@ -176,16 +176,16 @@ final class RTM_Demo_Importer {
 	 * Note: the first-loaded translation file overrides any following ones if the same translation is present.
 	 *
 	 * Locales found in:
-	 *      - WP_LANG_DIR/rt-demo-importer/rt-demo-importer-LOCALE.mo
-	 *      - WP_LANG_DIR/plugins/rt-demo-importer-LOCALE.mo
+	 *      - WP_LANG_DIR/suit-demo-importer/suit-demo-importer-LOCALE.mo
+	 *      - WP_LANG_DIR/plugins/suit-demo-importer-LOCALE.mo
 	 */
 	public function load_plugin_textdomain() {
 		$locale = is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		$locale = apply_filters( 'plugin_locale', $locale, 'rt-demo-importer' );
+		$locale = apply_filters( 'plugin_locale', $locale, 'suit-demo-importer' );
 
-		unload_textdomain( 'rt-demo-importer' );
-		load_textdomain( 'rt-demo-importer', WP_LANG_DIR . '/rt-demo-importer/rt-demo-importer-' . $locale . '.mo' );
-		load_plugin_textdomain( 'rt-demo-importer', false, plugin_basename( dirname( RTDM_PLUGIN_FILE ) ) . '/languages' );
+		unload_textdomain( 'suit-demo-importer' );
+		load_textdomain( 'suit-demo-importer', WP_LANG_DIR . '/suit-demo-importer/suit-demo-importer-' . $locale . '.mo' );
+		load_plugin_textdomain( 'suit-demo-importer', false, plugin_basename( dirname( SUIT_DM_PLUGIN_FILE ) ) . '/languages' );
 	}
 
 	/**
@@ -194,7 +194,7 @@ final class RTM_Demo_Importer {
 	 * @return string
 	 */
 	public function plugin_url() {
-		return untrailingslashit( plugins_url( '/', RTDM_PLUGIN_FILE ) );
+		return untrailingslashit( plugins_url( '/', SUIT_DM_PLUGIN_FILE ) );
 	}
 
 	/**
@@ -203,7 +203,7 @@ final class RTM_Demo_Importer {
 	 * @return string
 	 */
 	public function plugin_path() {
-		return untrailingslashit( plugin_dir_path( RTDM_PLUGIN_FILE ) );
+		return untrailingslashit( plugin_dir_path( SUIT_DM_PLUGIN_FILE ) );
 	}
 
 	/**
@@ -214,7 +214,7 @@ final class RTM_Demo_Importer {
 	 */
 	public function plugin_action_links( $actions ) {
 		$new_actions = array(
-			'importer' => '<a href="' . admin_url( 'themes.php?page=rt-demo-importer' ) . '" aria-label="' . esc_attr( __( 'View Demo Importer', 'rt-demo-importer' ) ) . '">' . __( 'Demo Importer', 'rt-demo-importer' ) . '</a>',
+			'importer' => '<a href="' . admin_url( 'themes.php?page=suit-demo-importer' ) . '" aria-label="' . esc_attr( __( 'View Demo Importer', 'suit-demo-importer' ) ) . '">' . __( 'Demo Importer', 'suit-demo-importer' ) . '</a>',
 		);
 
 		return array_merge( $new_actions, $actions );
@@ -228,10 +228,10 @@ final class RTM_Demo_Importer {
 	 * @return array
 	 */
 	public function plugin_row_meta( $plugin_meta, $plugin_file ) {
-		/*if ( RTDM_PLUGIN_BASENAME === $plugin_file ) {
+		/*if ( SUIT_DM_PLUGIN_BASENAME === $plugin_file ) {
 			$new_plugin_meta = array(
-				'docs'    => '<a href="' . esc_url( apply_filters( 'rt_demo_importer_docs_url', 'https://risethemes.com/docs/rt-demo-importer/' ) ) . '" title="' . esc_attr( __( 'View Demo Importer Documentation', 'rt-demo-importer' ) ) . '">' . __( 'Docs', 'rt-demo-importer' ) . '</a>',
-				'support' => '<a href="' . esc_url( apply_filters( 'rt_demo_importer_support_url', 'https://risethemes.com/support-forum/' ) ) . '" title="' . esc_attr( __( 'Visit Free Customer Support Forum', 'rt-demo-importer' ) ) . '">' . __( 'Free Support', 'rt-demo-importer' ) . '</a>',
+				'docs'    => '<a href="' . esc_url( apply_filters( 'suit_demo_importer_docs_url', 'https://risethemes.com/docs/suit-demo-importer/' ) ) . '" title="' . esc_attr( __( 'View Demo Importer Documentation', 'suit-demo-importer' ) ) . '">' . __( 'Docs', 'suit-demo-importer' ) . '</a>',
+				'support' => '<a href="' . esc_url( apply_filters( 'suit_demo_importer_support_url', 'https://risethemes.com/support-forum/' ) ) . '" title="' . esc_attr( __( 'Visit Free Customer Support Forum', 'suit-demo-importer' ) ) . '">' . __( 'Free Support', 'suit-demo-importer' ) . '</a>',
 			);
 
 			return array_merge( $plugin_meta, $new_plugin_meta );
@@ -248,6 +248,6 @@ final class RTM_Demo_Importer {
 		$themes_url = array_intersect( array_keys( wp_get_themes() ), $this->get_core_supported_themes() ) ? admin_url( 'themes.php?search=risetheme' ) : admin_url( 'theme-install.php?search=risetheme' );
 
 		/* translators: %s: official RT themes URL */
-		echo '<div class="error notice is-dismissible"><p><strong>' . esc_html__( 'RT Demo Importer', 'rt-demo-importer' ) . '</strong> &#8211; ' . sprintf( esc_html__( 'This plugin requires %s to be activated to work.', 'rt-demo-importer' ), '<a href="' . esc_url( $themes_url ) . '">' . esc_html__( 'Official RT Theme', 'rt-demo-importer' ) . '</a>' ) . '</p></div>';
+		echo '<div class="error notice is-dismissible"><p><strong>' . esc_html__( 'RT Demo Importer', 'suit-demo-importer' ) . '</strong> &#8211; ' . sprintf( esc_html__( 'This plugin requires %s to be activated to work.', 'suit-demo-importer' ), '<a href="' . esc_url( $themes_url ) . '">' . esc_html__( 'Official RT Theme', 'suit-demo-importer' ) . '</a>' ) . '</p></div>';
 	}
 }
